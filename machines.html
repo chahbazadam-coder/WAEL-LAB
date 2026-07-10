@@ -135,7 +135,7 @@
     var cabs = cabinets();
     if (!cabs.length) { box.innerHTML = '<div class="empty">No cabinets listed.</div>'; return; }
     cabs.forEach(function(cb){
-      var n = (cb.contains||[]).length;
+      var n = (cb.contains||[]).length + (cb.contents||[]).length;
       var a = document.createElement("a");
       a.className = "cab"; a.href = "item.html?id=" + encodeURIComponent(cb.id);
       a.innerHTML = '<span class="cic">' + window.assetIcon(cb.icon) + '</span>' +

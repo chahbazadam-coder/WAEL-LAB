@@ -37,8 +37,10 @@
      ticket on the Maintenance board. Delete the maintenance field once fixed
      (and bump lastMaintained) to clear it from both places.
 
-   type "cabinet":
-     description, contains: [ toolId, toolId, ... ]
+   type "cabinet" (a cabinet, locker, OR a box):
+     description
+     contains: [ id, id, ... ]                 // other catalogued items (each has its own QR page)
+     contents: [ { name, qty, note }, ... ]    // an inline packing list (no separate pages)
 
    type "tool":
      purpose, home (cabinet id it belongs to), qty
@@ -63,18 +65,29 @@ window.LAB_ASSETS = [
     note: ""
   },
 
-  /* ------------------------- CABINETS / LOCKERS ------------------------- */
+  /* ------------------------- CABINETS / BOXES ------------------------- */
   {
-    id: "example-cabinet", no: "EFD-C-001", type: "cabinet", name: "[Cabinet name]", icon: "cabinet",
+    id: "cab-mech314", no: "EFD-C-001", type: "cabinet", name: "MECH 314 Class Activity Box", icon: "box",
     location: "[location]",
-    description: "[placeholder]",
-    contains: [ "example-tool" ]
+    description: "Materials and equipment for the MECH 314 class activity.",
+    contents: [
+      { name: "Reusable plastic ice cubes, assorted colors", qty: "[#]", note: "Family / Dollar Empire — box + mesh bag" },
+      { name: "Plastic balls, assorted colors (ball-pit type)", qty: "[#]", note: "mesh bag" },
+      { name: "String / twine, cream", qty: "[#]", note: "spool" },
+      { name: "Black screen mesh / netting", qty: "[#]" },
+      { name: "Black fabric / cloth", qty: "[#]" },
+      { name: "Wooden cubes", qty: "[#]", note: "label 730441" },
+      { name: "Wooden balls, 3/8\" (Woodpeckers) + bulk wooden balls", qty: "[#]", note: "label 5048" },
+      { name: "Clear / frosted spheres (beads)", qty: "[#]", note: "label 730442 PO" },
+      { name: "AQUANEAT 50 GPH water pump (G054)", qty: "19" },
+      { name: "Altera Cyclone V GT FPGA Development Kit", qty: "2" }
+    ]
   },
 
   /* ------------------------- TOOLS ------------------------- */
   { id: "example-tool", no: "EFD-T-001", type: "tool", name: "[Tool name]", icon: "tool",
     tags: ["[domain]", "[tag]"],
-    purpose: "[placeholder]", home: "example-cabinet", qty: "[#]", location: "[location]" }
+    purpose: "[placeholder]", home: "", qty: "[#]", location: "[location]" }
 
 ];
 

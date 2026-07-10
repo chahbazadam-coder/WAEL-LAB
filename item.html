@@ -25,6 +25,13 @@
       display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .mini .mic svg { width: 20px; height: 20px; }
     .mini b { font-size: 0.9rem; }
+    .clist { display: flex; flex-direction: column; }
+    .crow { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .crow:last-child { border-bottom: none; }
+    .cname { font-size: 0.96rem; font-weight: 600; }
+    .cnote { display: block; font-weight: 400; color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+    .cqty { flex-shrink: 0; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); }
     .backlink { display: inline-block; margin: 24px 0 0; font-size: 0.9rem; }
     .notfound { text-align: center; padding: 70px 0; }
   </style>
@@ -152,16 +159,27 @@
     function cabinetView(a) {
       var h = "";
       if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.description) + '</p>';
-      h += '<div class="panel"><dl class="kv">' + kv("Asset no.", a.no) + kv("Location", a.location) +
-           kv("Items inside", (a.contains || []).length) + '</dl></div>';
-      h += '<div class="panel"><h2>🗄️ What\'s inside</h2>';
       var items = (a.contains || []).map(window.getAsset).filter(Boolean);
-      if (!items.length) h += '<p style="color:var(--muted);">No tools linked yet.</p>';
-      else h += '<div class="contains-grid">' + items.map(function (t) {
-        return '<a class="mini" href="item.html?id=' + encodeURIComponent(t.id) + '">' +
-          '<span class="mic">' + window.assetIcon(t.icon) + '</span><b>' + esc(t.name) + '</b></a>';
-      }).join("") + '</div>';
-      h += '</div>';
+      var contents = a.contents || [];
+      h += '<div class="panel"><dl class="kv">' + kv("Asset no.", a.no) + kv("Location", a.location) +
+           kv("Items inside", items.length + contents.length) + '</dl></div>';
+
+      if (items.length) {
+        h += '<div class="panel"><h2>🗄️ Linked items</h2><div class="contains-grid">' + items.map(function (t) {
+          return '<a class="mini" href="item.html?id=' + encodeURIComponent(t.id) + '">' +
+            '<span class="mic">' + window.assetIcon(t.icon) + '</span><b>' + esc(t.name) + '</b></a>';
+        }).join("") + '</div></div>';
+      }
+
+      if (contents.length) {
+        h += '<div class="panel"><h2>📦 Contents</h2><div class="clist">' + contents.map(function (c) {
+          return '<div class="crow">' +
+            '<div class="cname">' + esc(c.name) + (c.note ? '<span class="cnote">' + esc(c.note) + '</span>' : '') + '</div>' +
+            '<div class="cqty">' + (c.qty ? '×' + esc(c.qty) : '—') + '</div></div>';
+        }).join("") + '</div></div>';
+      }
+
+      if (!items.length && !contents.length) h += '<div class="panel"><p style="color:var(--muted);">[placeholder — no contents listed]</p></div>';
       return h;
     }
 
