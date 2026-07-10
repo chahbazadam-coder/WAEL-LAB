@@ -2,3 +2,6 @@ memory/
 scratchpad/
 .DS_Store
 Thumbs.db
+# Raw photo drops — renamed images go into images/ (which IS tracked)
+*.zip
+_incoming/
