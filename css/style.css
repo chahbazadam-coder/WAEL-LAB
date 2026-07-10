@@ -110,6 +110,26 @@ footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; g
 
 .empty { text-align: center; color: var(--muted); padding: 40px 0; }
 
+/* ---------- Maintenance ---------- */
+.maint-panel { border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 26px; background: #fff; }
+.maint-panel.has-work { border-color: #f1cf9e; background: var(--warn-soft); }
+.maint-panel h2 { font-size: 1.1rem; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.maint-ok { color: var(--good); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.ticket { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-top: 1px solid rgba(0,0,0,0.08); }
+.ticket:first-of-type { border-top: none; }
+.ticket .tbody { flex: 1; }
+.ticket .tbody h4 { font-size: 0.98rem; }
+.ticket .tbody h4 a { color: var(--text); }
+.ticket .issue { font-size: 0.92rem; margin-top: 3px; }
+.ticket .action { font-size: 0.9rem; color: var(--muted); margin-top: 4px; }
+.ticket .reported { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+.prio { flex-shrink: 0; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 20px; margin-top: 2px; }
+.prio.high { color: var(--danger); background: var(--danger-soft); }
+.prio.medium { color: var(--warn); background: #fbe9cf; }
+.prio.low { color: var(--muted); background: var(--surface); }
+.needs-maint { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 700;
+  color: var(--warn); background: var(--warn-soft); padding: 3px 9px; border-radius: 20px; margin-top: 8px; }
+
 @media (max-width: 680px) {
   .safety-rules { columns: 1; }
   .nav-links {

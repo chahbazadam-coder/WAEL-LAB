@@ -50,7 +50,9 @@
       <a class="btn btn-ghost btn-sm" href="qr.html">🖨 Print QR codes</a>
     </div>
 
-    <div class="list-controls" style="margin-top:22px;">
+    <div id="maint-board" style="margin-top:24px;"></div>
+
+    <div class="list-controls" style="margin-top:4px;">
       <div class="filter-chips" id="filter-chips"></div>
     </div>
     <div class="grid machine-grid" id="machine-grid"></div>
@@ -118,6 +120,7 @@
           '<div class="machine-meta">📍 ' + esc(m.location||'—') +
             '<br>🛠 Last maintained: ' + esc(m.lastMaintained||'—') +
             (m.note ? '<br>' + esc(m.note) : '') + '</div>' +
+          (m.maintenance && m.maintenance.needed ? '<div><span class="needs-maint">🔧 Needs maintenance</span></div>' : '') +
           '<div class="machine-links">' + links.join('') + '</div>' + howto +
         '</div>';
       var img = card.querySelector("img");
@@ -154,9 +157,38 @@
     });
   }
 
+  function renderMaintenance() {
+    var box = $("maint-board");
+    var PRIO = { high: 0, medium: 1, low: 2 };
+    var due = window.LAB_ASSETS.filter(function(a){ return a.maintenance && a.maintenance.needed; })
+      .sort(function(a,b){ return (PRIO[a.maintenance.priority]||1) - (PRIO[b.maintenance.priority]||1); });
+
+    if (!due.length) {
+      box.className = "maint-panel";
+      box.innerHTML = '<div class="maint-ok">✓ All equipment operational — nothing needs maintenance.</div>';
+      return;
+    }
+    box.className = "maint-panel has-work";
+    var html = '<h2>🔧 Maintenance board <span style="font-weight:600;color:var(--muted);font-size:0.85rem;">' +
+      due.length + ' item' + (due.length===1?'':'s') + ' need attention</span></h2>';
+    due.forEach(function(a){
+      var m = a.maintenance;
+      html += '<div class="ticket">' +
+        '<span class="prio ' + esc(m.priority||"medium") + '">' + esc(m.priority||"medium") + '</span>' +
+        '<div class="tbody">' +
+          '<h4><a href="item.html?id=' + encodeURIComponent(a.id) + '">' + esc(a.name) + '</a>' +
+            (a.no ? ' <span style="color:var(--muted);font-weight:600;font-size:0.85rem;">' + esc(a.no) + '</span>' : '') + '</h4>' +
+          '<div class="issue"><b>Issue:</b> ' + esc(m.issue) + '</div>' +
+          (m.action ? '<div class="action"><b>To do:</b> ' + esc(m.action) + '</div>' : '') +
+          (m.reported ? '<div class="reported">Reported ' + esc(m.reported) + '</div>' : '') +
+        '</div></div>';
+    });
+    box.innerHTML = html;
+  }
+
   $("menu-btn").addEventListener("click", function(){ $("nav-links").classList.toggle("open"); });
   $("year").textContent = new Date().getFullYear();
-  render(); renderCabinets(); renderTools();
+  renderMaintenance(); render(); renderCabinets(); renderTools();
   </script>
 
 </body>

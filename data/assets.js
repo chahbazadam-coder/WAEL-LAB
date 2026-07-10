@@ -19,6 +19,18 @@
      description, howItWorks: [steps...], manuals: [{label,url}],
      safety (link, e.g. "safety.html#laser"), lastMaintained ("YYYY-MM-DD"), note
 
+   MAINTENANCE (works on machines AND tools):
+     maintenance: {
+       needed: true,
+       priority: "high" | "medium" | "low",
+       issue:  "what's wrong",
+       action: "what needs to be done",
+       reported: "YYYY-MM-DD"
+     }
+     Set this and the item shows a "Needs maintenance" badge AND appears as a
+     ticket on the Maintenance board. Delete the maintenance field once fixed
+     (and bump lastMaintained) to clear it from both places.
+
    type "cabinet":
      description, contains: [ toolId, toolId, ... ]
 
@@ -76,7 +88,13 @@ window.LAB_ASSETS = [
     manuals: [ { label: "Manual", url: "" } ],
     safety: "safety.html#chemicals",
     lastMaintained: "2026-03-20",
-    note: "⚠ Out of service — chuck vacuum leak, reported 2026-07-08."
+    note: "",
+    maintenance: {
+      needed: true, priority: "high",
+      issue: "Chuck vacuum leak — won't hold the wafer during spin.",
+      action: "Replace the chuck vacuum seal; call service if it persists.",
+      reported: "2026-07-08"
+    }
   },
   {
     id: "microscope", no: "WAEL-M-004", type: "machine", name: "Inverted Microscope + Camera", icon: "microscope",
@@ -123,7 +141,13 @@ window.LAB_ASSETS = [
     manuals: [ { label: "Manual", url: "" } ],
     safety: "",
     lastMaintained: "2026-02-18",
-    note: ""
+    note: "",
+    maintenance: {
+      needed: true, priority: "low",
+      issue: "Annual calibration due.",
+      action: "Send probes for calibration or run the self-cal routine.",
+      reported: "2026-07-01"
+    }
   },
 
   /* ------------------------- CABINETS / LOCKERS ------------------------- */

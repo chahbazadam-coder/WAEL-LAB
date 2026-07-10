@@ -98,10 +98,22 @@
       c.innerHTML = html;
     }
 
+    function maintPanel(a) {
+      var m = a.maintenance;
+      if (!m || !m.needed) return "";
+      return '<div class="maint-panel has-work" style="margin-top:8px;">' +
+        '<h2>🔧 Needs maintenance <span class="prio ' + esc(m.priority || "medium") + '">' + esc(m.priority || "medium") + '</span></h2>' +
+        '<div class="issue"><b>Issue:</b> ' + esc(m.issue) + '</div>' +
+        (m.action ? '<div class="action"><b>To do:</b> ' + esc(m.action) + '</div>' : '') +
+        (m.reported ? '<div class="reported">Reported ' + esc(m.reported) + '</div>' : '') +
+        '</div>';
+    }
+
     function machineView(a) {
       var h = "";
       if (a.photo) h += '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(a.photo) + '" ' +
         'onerror="this.style.display=\'none\'">';
+      h += maintPanel(a);
       if (a.note) h += '<div class="hint" style="background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:0.9rem;">' + esc(a.note) + '</div>';
       if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin-bottom:16px;">' + esc(a.description) + '</p>';
 
@@ -148,6 +160,7 @@
     function toolView(a) {
       var h = "";
       if (a.purpose) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.purpose) + '</p>';
+      h += maintPanel(a);
       h += '<div class="panel"><dl class="kv">';
       h += kv("Asset no.", a.no);
       h += kv("Quantity", a.qty);
