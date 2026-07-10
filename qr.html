@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print QR codes — WAEL Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 8px; }
+    .controls input { padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; min-width: 320px; }
+    .qr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; margin-top: 20px; }
+    .qr-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; background: #fff; break-inside: avoid; }
+    .qr-card svg { width: 150px; height: 150px; }
+    .qr-card .nm { font-weight: 700; font-size: 0.92rem; margin-top: 8px; }
+    .qr-card .ty { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 2px; }
+    .note { font-size: 0.88rem; color: var(--muted); background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
+    @media print {
+      header, footer, .controls, .note, .page-sub, h1.page-title { display: none !important; }
+      .qr-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .qr-card { border: 1px dashed #bbb; }
+      body { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none;">WAEL <span>Lab</span></a></div>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html">Home</a>
+          <a href="machines.html">Machines &amp; Tools</a>
+          <a href="inventory.html">Inventory</a>
+          <a href="safety.html">Safety</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1 class="page-title">Print QR codes</h1>
+    <p class="page-sub">One code per catalog item. Scanning it opens that item's page. Print, cut, and stick on the tool / cabinet / machine.</p>
+
+    <div class="note" id="base-note"></div>
+
+    <div class="controls">
+      <div class="filter-chips" id="filter-chips" style="margin:0;"></div>
+      <label style="font-size:0.85rem;color:var(--muted);">Base URL:</label>
+      <input id="base" type="text">
+      <button class="btn btn-primary btn-sm" onclick="window.print()">🖨 Print</button>
+    </div>
+
+    <div class="qr-grid" id="qr-grid"></div>
+  </div>
+
+  <footer>
+    <div class="wrap"><div>© <span id="year"></span> WAEL Lab.</div><div>QR codes</div></div>
+  </footer>
+
+  <script src="vendor/qrcode.js"></script>
+  <script src="data/assets.js"></script>
+  <script>
+    var $ = function (id) { return document.getElementById(id); };
+    $("menu-btn").addEventListener("click", function () { $("nav-links").classList.toggle("open"); });
+    $("year").textContent = new Date().getFullYear();
+
+    // Base URL = folder containing this page, on whatever host it's served from.
+    var defaultBase = new URL(".", location.href).href;   // e.g. https://user.github.io/WAEL-LAB/
+    $("base").value = defaultBase;
+    if (location.protocol === "file:") {
+      $("base-note").innerHTML = "⚠ You opened this from a file. Generate QR codes from the <b>live site</b> so the codes point to the public URL, " +
+        "or paste your site URL in the Base URL box below.";
+    } else {
+      $("base-note").innerHTML = "✅ Codes point to <b>" + defaultBase + "</b>. Scanning opens the matching item page. " +
+        "Edit the Base URL box if you host somewhere else.";
+    }
+
+    var activeType = null;
+
+    function itemUrl(id) {
+      var base = $("base").value.replace(/\/?$/, "/");
+      return base + "item.html?id=" + encodeURIComponent(id);
+    }
+
+    function qrSvg(text) {
+      var qr = qrcode(0, "M");         // 0 = auto version, M = medium error correction
+      qr.addData(text);
+      qr.make();
+      return qr.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+    }
+
+    function renderFilters() {
+      var types = ["machine", "cabinet", "tool"];
+      var box = $("filter-chips"); box.innerHTML = "";
+      function mk(label, val) {
+        var c = document.createElement("span");
+        c.className = "chip" + (activeType === val ? " selected" : "");
+        c.textContent = label;
+        c.onclick = function () { activeType = activeType === val ? null : val; render(); };
+        return c;
+      }
+      box.appendChild(mk("All", null));
+      types.forEach(function (t) { box.appendChild(mk(t + "s", t)); });
+    }
+
+    function render() {
+      renderFilters();
+      var grid = $("qr-grid"); grid.innerHTML = "";
+      (window.LAB_ASSETS || []).filter(function (a) { return !activeType || a.type === activeType; })
+        .forEach(function (a) {
+          var card = document.createElement("div");
+          card.className = "qr-card";
+          card.innerHTML = qrSvg(itemUrl(a.id)) +
+            '<div class="nm">' + a.name + '</div><div class="ty">' + a.type + '</div>';
+          grid.appendChild(card);
+        });
+    }
+
+    $("base").addEventListener("input", render);
+    render();
+  </script>
+
+</body>
+</html>

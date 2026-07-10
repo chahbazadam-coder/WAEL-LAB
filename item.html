@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item — WAEL Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .item-hero { display: flex; gap: 18px; align-items: center; margin: 28px 0 6px; }
+    .item-ic { width: 60px; height: 60px; border-radius: 14px; background: var(--accent-soft); color: var(--accent);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .item-ic svg { width: 32px; height: 32px; }
+    .item-hero h1 { font-size: 1.7rem; letter-spacing: -0.02em; }
+    .kind { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .item-photo { width: 100%; max-height: 320px; object-fit: cover; border-radius: 14px; border: 1px solid var(--border); margin: 18px 0; }
+    .kv { display: grid; grid-template-columns: 150px 1fr; gap: 8px 16px; margin: 6px 0; }
+    .kv dt { color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+    .kv dd { font-size: 0.95rem; }
+    .steps { margin: 6px 0 0 18px; } .steps li { margin-bottom: 6px; }
+    .contains-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 12px; margin-top: 6px; }
+    .mini { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border);
+      border-radius: 10px; background: #fff; color: var(--text); }
+    .mini:hover { border-color: var(--accent); text-decoration: none; }
+    .mini .mic { width: 34px; height: 34px; border-radius: 8px; background: var(--accent-soft); color: var(--accent);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .mini .mic svg { width: 20px; height: 20px; }
+    .mini b { font-size: 0.9rem; }
+    .backlink { display: inline-block; margin: 24px 0 0; font-size: 0.9rem; }
+    .notfound { text-align: center; padding: 70px 0; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none;">WAEL <span>Lab</span></a></div>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html">Home</a>
+          <a href="machines.html">Machines &amp; Tools</a>
+          <a href="inventory.html">Inventory</a>
+          <a href="safety.html">Safety</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap" id="content"></div>
+
+  <footer>
+    <div class="wrap"><div>© <span id="year"></span> WAEL Lab.</div><div>Asset catalog</div></div>
+  </footer>
+
+  <script src="data/assets.js"></script>
+  <script>
+    var $ = function (id) { return document.getElementById(id); };
+    $("menu-btn").addEventListener("click", function () { $("nav-links").classList.toggle("open"); });
+    $("year").textContent = new Date().getFullYear();
+
+    function esc(s) { return (s == null ? "" : String(s)).replace(/[&<>"]/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
+
+    var STATUS = { available: "Available", inuse: "In use", down: "Down", caution: "Caution" };
+
+    function getId() {
+      var m = location.search.match(/[?&]id=([^&]+)/);
+      return m ? decodeURIComponent(m[1]) : "";
+    }
+
+    function badge(a) {
+      if (a.type !== "machine" || !a.status) return "";
+      return '<span class="badge ' + a.status + '">' + (STATUS[a.status] || a.status) + '</span>';
+    }
+
+    function render() {
+      var id = getId();
+      var a = window.getAsset(id);
+      var c = $("content");
+      if (!a) {
+        c.innerHTML = '<div class="notfound"><h1 class="page-title">Item not found</h1>' +
+          '<p class="page-sub" style="margin:0 auto;">No catalog entry for "<b>' + esc(id) + '</b>". ' +
+          'It may have been removed. <a href="machines.html">Browse Machines &amp; Tools</a>.</p></div>';
+        return;
+      }
+      document.title = a.name + " — WAEL Lab";
+
+      var html = '<div class="item-hero">' +
+        '<div class="item-ic">' + window.assetIcon(a.icon) + '</div>' +
+        '<div><div class="kind">' + esc(a.type) + '</div>' +
+        '<h1>' + esc(a.name) + ' ' + badge(a) + '</h1></div></div>';
+
+      if (a.type === "machine") html += machineView(a);
+      else if (a.type === "cabinet") html += cabinetView(a);
+      else if (a.type === "tool") html += toolView(a);
+
+      html += '<a class="backlink" href="machines.html">← All machines &amp; tools</a>';
+      c.innerHTML = html;
+    }
+
+    function machineView(a) {
+      var h = "";
+      if (a.photo) h += '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(a.photo) + '" ' +
+        'onerror="this.style.display=\'none\'">';
+      if (a.note) h += '<div class="hint" style="background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:0.9rem;">' + esc(a.note) + '</div>';
+      if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin-bottom:16px;">' + esc(a.description) + '</p>';
+
+      h += '<div class="panel"><dl class="kv">';
+      h += kv("Category", a.category);
+      h += kv("Location", a.location);
+      h += kv("Last maintained", a.lastMaintained || "—");
+      if (a.safety) h += '<dt>Safety</dt><dd><a href="' + esc(a.safety) + '">Safety procedure →</a></dd>';
+      h += '</dl></div>';
+
+      if (a.howItWorks && a.howItWorks.length) {
+        h += '<div class="panel"><h2>⚙️ How it works</h2><ol class="steps">' +
+          a.howItWorks.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join("") + '</ol></div>';
+      }
+      var mans = (a.manuals || []).filter(function (m) { return m.url; });
+      if (mans.length) {
+        h += '<div class="panel"><h2>📄 Manuals &amp; booklets</h2><div style="display:flex;flex-wrap:wrap;gap:14px;">' +
+          mans.map(function (m) { return '<a class="btn btn-ghost btn-sm" href="' + esc(m.url) + '" target="_blank">' + esc(m.label) + '</a>'; }).join("") +
+          '</div></div>';
+      } else if (a.manuals && a.manuals.length) {
+        h += '<div class="panel"><h2>📄 Manuals &amp; booklets</h2><p style="color:var(--muted);font-size:0.9rem;">Links not added yet: ' +
+          a.manuals.map(function (m) { return esc(m.label); }).join(", ") + '</p></div>';
+      }
+      return h;
+    }
+
+    function cabinetView(a) {
+      var h = "";
+      if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.description) + '</p>';
+      h += '<div class="panel"><dl class="kv">' + kv("Location", a.location) +
+           kv("Items inside", (a.contains || []).length) + '</dl></div>';
+      h += '<div class="panel"><h2>🗄️ What\'s inside</h2>';
+      var items = (a.contains || []).map(window.getAsset).filter(Boolean);
+      if (!items.length) h += '<p style="color:var(--muted);">No tools linked yet.</p>';
+      else h += '<div class="contains-grid">' + items.map(function (t) {
+        return '<a class="mini" href="item.html?id=' + encodeURIComponent(t.id) + '">' +
+          '<span class="mic">' + window.assetIcon(t.icon) + '</span><b>' + esc(t.name) + '</b></a>';
+      }).join("") + '</div>';
+      h += '</div>';
+      return h;
+    }
+
+    function toolView(a) {
+      var h = "";
+      if (a.purpose) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.purpose) + '</p>';
+      h += '<div class="panel"><dl class="kv">';
+      h += kv("Quantity", a.qty);
+      h += kv("Location", a.location);
+      var home = a.home ? window.getAsset(a.home) : null;
+      if (home) h += '<dt>Belongs in</dt><dd><a href="item.html?id=' + encodeURIComponent(home.id) + '">' + esc(home.name) + ' →</a></dd>';
+      h += '</dl></div>';
+      return h;
+    }
+
+    function kv(k, v) { return '<dt>' + esc(k) + '</dt><dd>' + esc(v || "—") + '</dd>'; }
+
+    render();
+    window.addEventListener("popstate", render);
+  </script>
+
+</body>
+</html>
