@@ -71,14 +71,14 @@ window.LAB_ASSETS = [
     location: "[location]",
     description: "Materials and equipment for the MECH 314 class activity.",
     contents: [
-      { name: "Reusable plastic ice cubes, assorted colors", qty: "[#]", note: "Family / Dollar Empire — box + mesh bag" },
-      { name: "Plastic balls, assorted colors (ball-pit type)", qty: "[#]", note: "mesh bag" },
-      { name: "String / twine, cream", qty: "[#]", note: "spool" },
-      { name: "Black screen mesh / netting", qty: "[#]" },
-      { name: "Black fabric / cloth", qty: "[#]" },
-      { name: "Wooden cubes", qty: "[#]", note: "label 730441" },
-      { name: "Wooden balls, 3/8\" (Woodpeckers) + bulk wooden balls", qty: "[#]", note: "label 5048" },
-      { name: "Clear / frosted spheres (beads)", qty: "[#]", note: "label 730442 PO" },
+      { name: "Reusable plastic ice cubes, assorted colors", qty: "1", note: "Family / Dollar Empire — box + mesh bag" },
+      { name: "Plastic balls, assorted colors (ball-pit type)", qty: "1", note: "mesh bag" },
+      { name: "String / twine, cream", qty: "1", note: "spool" },
+      { name: "Black screen mesh / netting", qty: "1" },
+      { name: "Black fabric / cloth", qty: "1" },
+      { name: "Wooden cubes", qty: "1", note: "label 730441" },
+      { name: "Wooden balls, 3/8\" (Woodpeckers) + bulk wooden balls", qty: "1", note: "label 5048" },
+      { name: "Clear / frosted spheres (beads)", qty: "1", note: "label 730442 PO" },
       { name: "AQUANEAT 50 GPH water pump (G054)", qty: "19" },
       { name: "Altera Cyclone V GT FPGA Development Kit", qty: "2" }
     ]
