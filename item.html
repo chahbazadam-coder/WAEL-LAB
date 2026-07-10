@@ -87,7 +87,7 @@
 
       var html = '<div class="item-hero">' +
         '<div class="item-ic">' + window.assetIcon(a.icon) + '</div>' +
-        '<div><div class="kind">' + esc(a.type) + '</div>' +
+        '<div><div class="kind">' + esc(a.type) + (a.no ? ' · <span style="color:var(--accent)">' + esc(a.no) + '</span>' : '') + '</div>' +
         '<h1>' + esc(a.name) + ' ' + badge(a) + '</h1></div></div>';
 
       if (a.type === "machine") html += machineView(a);
@@ -106,6 +106,7 @@
       if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin-bottom:16px;">' + esc(a.description) + '</p>';
 
       h += '<div class="panel"><dl class="kv">';
+      h += kv("Asset no.", a.no);
       h += kv("Category", a.category);
       h += kv("Location", a.location);
       h += kv("Last maintained", a.lastMaintained || "—");
@@ -131,7 +132,7 @@
     function cabinetView(a) {
       var h = "";
       if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.description) + '</p>';
-      h += '<div class="panel"><dl class="kv">' + kv("Location", a.location) +
+      h += '<div class="panel"><dl class="kv">' + kv("Asset no.", a.no) + kv("Location", a.location) +
            kv("Items inside", (a.contains || []).length) + '</dl></div>';
       h += '<div class="panel"><h2>🗄️ What\'s inside</h2>';
       var items = (a.contains || []).map(window.getAsset).filter(Boolean);
@@ -148,6 +149,7 @@
       var h = "";
       if (a.purpose) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.purpose) + '</p>';
       h += '<div class="panel"><dl class="kv">';
+      h += kv("Asset no.", a.no);
       h += kv("Quantity", a.qty);
       h += kv("Location", a.location);
       var home = a.home ? window.getAsset(a.home) : null;

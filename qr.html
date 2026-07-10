@@ -12,6 +12,8 @@
     .qr-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; background: #fff; break-inside: avoid; }
     .qr-card svg { width: 150px; height: 150px; }
     .qr-card .nm { font-weight: 700; font-size: 0.92rem; margin-top: 8px; }
+    .qr-card .no { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.82rem;
+      font-weight: 700; color: var(--accent); margin-top: 3px; letter-spacing: 0.04em; }
     .qr-card .ty { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 2px; }
     .note { font-size: 0.88rem; color: var(--muted); background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; }
     @media print {
@@ -113,7 +115,9 @@
           var card = document.createElement("div");
           card.className = "qr-card";
           card.innerHTML = qrSvg(itemUrl(a.id)) +
-            '<div class="nm">' + a.name + '</div><div class="ty">' + a.type + '</div>';
+            '<div class="nm">' + a.name + '</div>' +
+            (a.no ? '<div class="no">' + a.no + '</div>' : '') +
+            '<div class="ty">' + a.type + '</div>';
           grid.appendChild(card);
         });
     }

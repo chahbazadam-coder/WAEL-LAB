@@ -113,7 +113,7 @@
         '<a class="card-link" href="item.html?id=' + encodeURIComponent(m.id) + '"><img class="machine-photo" alt="' + esc(m.name) + '"></a>' +
         '<div class="machine-body">' +
           '<div class="machine-head"><div><h3>' + esc(m.name) + '</h3>' +
-            '<div class="machine-cat">' + esc(m.category) + '</div></div>' +
+            '<div class="machine-cat">' + esc(m.category) + (m.no ? ' · ' + esc(m.no) : '') + '</div></div>' +
             '<span class="badge ' + m.status + '">' + (STATUS[m.status]||m.status) + '</span></div>' +
           '<div class="machine-meta">📍 ' + esc(m.location||'—') +
             '<br>🛠 Last maintained: ' + esc(m.lastMaintained||'—') +
@@ -149,7 +149,7 @@
     ts.forEach(function(t){
       var row = document.createElement("div"); row.className = "tool-row";
       row.innerHTML = '<a href="item.html?id=' + encodeURIComponent(t.id) + '">' + esc(t.name) + '</a>' +
-        '<span class="tmeta">qty ' + esc(t.qty||'—') + ' · ' + esc(t.location||'') + '</span>';
+        '<span class="tmeta">' + (t.no ? esc(t.no) + ' · ' : '') + 'qty ' + esc(t.qty||'—') + ' · ' + esc(t.location||'') + '</span>';
       box.appendChild(row);
     });
   }
