@@ -46,146 +46,35 @@
 
 window.LAB_ASSETS = [
 
+  /* ==== EXAMPLE ENTRIES — one of each type, all placeholders. We replace these
+          with the real inventory during the photo session. Asset numbers
+          (EFD-M-001 …) stay stable; fill in everything else. ==== */
+
   /* ------------------------- MACHINES ------------------------- */
   {
-    id: "laser-cutter", no: "EFD-M-001", type: "machine", name: "CO₂ Laser Cutter", icon: "laser",
-    category: "Optics", status: "available", location: "Room 1 — bench A",
-    photo: "images/machine-laser.jpg",
-    description: "Cuts and engraves acrylic, paper, and thin polymers. Used for rapid microfluidic mould and jig prototyping.",
-    howItWorks: [
-      "Put on the correct laser safety goggles.",
-      "Turn on exhaust/extraction before the laser.",
-      "Load material, set focus, set power/speed in the software.",
-      "Never leave the laser running unattended.",
-      "Turn off the laser, then leave exhaust running 2 min."
-    ],
-    manuals: [ { label: "User manual (PDF)", url: "" }, { label: "Quick-start booklet", url: "" } ],
-    safety: "safety.html#laser",
-    lastMaintained: "2026-06-15",
-    note: "Class 4 laser — trained users only."
-  },
-  {
-    id: "plasma-cleaner", no: "EFD-M-002", type: "machine", name: "Plasma Cleaner", icon: "plasma",
-    category: "Microfluidics", status: "available", location: "Room 2 — fume hood",
-    photo: "images/machine-plasma.jpg",
-    description: "Oxygen-plasma surface activation for irreversible PDMS–glass bonding.",
-    howItWorks: [
-      "Place PDMS and glass in the chamber, treated faces up.",
-      "Close chamber, start the vacuum pump.",
-      "Run plasma for the set time (e.g. 30–45 s).",
-      "Vent, remove parts, bond immediately while activated."
-    ],
-    manuals: [ { label: "Operating manual", url: "" } ],
-    safety: "safety.html#plasma",
-    lastMaintained: "2026-05-02",
+    id: "example-machine", no: "EFD-M-001", type: "machine", name: "[Machine name]", icon: "machine",
+    category: "[domain]", status: "available", location: "[location]",
+    photo: "",
+    description: "[placeholder]",
+    howItWorks: [ "[step]" ],
+    manuals: [ { label: "[manual name]", url: "" } ],
+    safety: "safety.html#machine-example",
+    lastMaintained: "[date]",
     note: ""
-  },
-  {
-    id: "spin-coater", no: "EFD-M-003", type: "machine", name: "Spin Coater", icon: "spincoater",
-    category: "Microfluidics", status: "down", location: "Room 2 — bench C",
-    photo: "images/machine-spincoater.jpg",
-    description: "Deposits uniform thin films of photoresist on wafers and slides.",
-    howItWorks: [
-      "Select or program the spin recipe (rpm, ramp, time).",
-      "Center the wafer/slide on the chuck; check the vacuum holds.",
-      "Dispense resist, close the lid, run the program.",
-      "Soft-bake per your process."
-    ],
-    manuals: [ { label: "Manual", url: "" } ],
-    safety: "safety.html#chemicals",
-    lastMaintained: "2026-03-20",
-    note: "",
-    maintenance: {
-      needed: true, priority: "high",
-      issue: "Chuck vacuum leak — won't hold the wafer during spin.",
-      action: "Replace the chuck vacuum seal; call service if it persists.",
-      reported: "2026-07-08"
-    }
-  },
-  {
-    id: "microscope", no: "EFD-M-004", type: "machine", name: "Inverted Microscope + Camera", icon: "microscope",
-    category: "Optics", status: "inuse", location: "Room 1 — optics table",
-    photo: "images/machine-microscope.jpg",
-    description: "Brightfield/fluorescence imaging of chips and samples, with digital camera capture.",
-    howItWorks: [
-      "Turn on illumination and the camera software.",
-      "Start at low magnification, then focus up.",
-      "Match the objective to the correct immersion medium.",
-      "Turn off the lamp after use to preserve bulb life."
-    ],
-    manuals: [ { label: "Camera software guide", url: "" } ],
-    safety: "",
-    lastMaintained: "2026-06-01",
-    note: "Book informally on the whiteboard."
-  },
-  {
-    id: "syringe-pump", no: "EFD-M-005", type: "machine", name: "Syringe Pump (×2)", icon: "pump",
-    category: "Microfluidics", status: "available", location: "Room 2 — bench C",
-    photo: "images/machine-syringepump.jpg",
-    description: "Precise, programmable flow control for driving fluids through microfluidic chips.",
-    howItWorks: [
-      "Mount the syringe, set the syringe diameter in the menu.",
-      "Set the flow rate and volume.",
-      "Prime tubing to remove air before connecting the chip.",
-      "Start; watch the first minute for leaks."
-    ],
-    manuals: [ { label: "Manual", url: "" } ],
-    safety: "",
-    lastMaintained: "2026-04-10",
-    note: ""
-  },
-  {
-    id: "oscilloscope", no: "EFD-M-006", type: "machine", name: "Oscilloscope + Function Generator", icon: "scope",
-    category: "Electronics", status: "available", location: "Room 3 — electronics bench",
-    photo: "images/machine-scope.jpg",
-    description: "Signal generation and measurement for testing custom control electronics and sensors.",
-    howItWorks: [
-      "Power on, connect probes, compensate the probe if needed.",
-      "Set timebase and vertical scale to see your signal.",
-      "Use Auto-set as a starting point, then fine-tune."
-    ],
-    manuals: [ { label: "Manual", url: "" } ],
-    safety: "",
-    lastMaintained: "2026-02-18",
-    note: "",
-    maintenance: {
-      needed: true, priority: "low",
-      issue: "Annual calibration due.",
-      action: "Send probes for calibration or run the self-cal routine.",
-      reported: "2026-07-01"
-    }
   },
 
   /* ------------------------- CABINETS / LOCKERS ------------------------- */
   {
-    id: "cab-optics", no: "EFD-C-001", type: "cabinet", name: "Optics Cabinet A", icon: "cabinet",
-    location: "Room 1 — beside optics table",
-    description: "Optical components and mounts. Return items to their labeled slots.",
-    contains: [ "tool-calipers", "tool-tweezers" ]
-  },
-  {
-    id: "cab-electronics", no: "EFD-C-002", type: "cabinet", name: "Electronics Locker", icon: "cabinet",
-    location: "Room 3 — under the bench",
-    description: "Hand tools and small electronics equipment.",
-    contains: [ "tool-multimeter", "tool-soldering", "tool-screwdrivers" ]
+    id: "example-cabinet", no: "EFD-C-001", type: "cabinet", name: "[Cabinet name]", icon: "cabinet",
+    location: "[location]",
+    description: "[placeholder]",
+    contains: [ "example-tool" ]
   },
 
   /* ------------------------- TOOLS ------------------------- */
-  { id: "tool-multimeter",  no: "EFD-T-001", type: "tool", name: "Digital Multimeter", icon: "tool",
-    tags: ["Electronics", "Measurement"],
-    purpose: "Measure voltage, current, resistance, and continuity.", home: "cab-electronics", qty: "3", location: "Electronics Locker, drawer 1" },
-  { id: "tool-soldering",   no: "EFD-T-002", type: "tool", name: "Soldering Station", icon: "tool",
-    tags: ["Electronics", "Soldering"],
-    purpose: "Solder electronic components and connectors.", home: "cab-electronics", qty: "2", location: "Electronics bench" },
-  { id: "tool-screwdrivers",no: "EFD-T-003", type: "tool", name: "Precision Screwdriver Set", icon: "tool",
-    tags: ["General", "Hand tool", "Fastening"],
-    purpose: "Small fasteners for enclosures and instruments.", home: "cab-electronics", qty: "1", location: "Electronics Locker" },
-  { id: "tool-calipers",    no: "EFD-T-004", type: "tool", name: "Digital Calipers", icon: "tool",
-    tags: ["General", "Measurement"],
-    purpose: "Measure dimensions to 0.01 mm.", home: "cab-optics", qty: "2", location: "Optics Cabinet A, drawer 2" },
-  { id: "tool-tweezers",    no: "EFD-T-005", type: "tool", name: "Tweezers (assorted)", icon: "tool",
-    tags: ["General", "Hand tool"],
-    purpose: "Handle small parts, chips, and optical components.", home: "cab-optics", qty: "6", location: "Optics Cabinet A" }
+  { id: "example-tool", no: "EFD-T-001", type: "tool", name: "[Tool name]", icon: "tool",
+    tags: ["[domain]", "[tag]"],
+    purpose: "[placeholder]", home: "example-cabinet", qty: "[#]", location: "[location]" }
 
 ];
 
