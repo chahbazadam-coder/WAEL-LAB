@@ -15,7 +15,7 @@ window.LAB_PUBLICATIONS = [
   {
     year: "2008",
     title: "PIV Measurements in the Wake of a Cactus Shaped Cylinder",
-    authors: "W. Karaki, J. Abboud, N. Daher, M. Osman, G. Oweis",
+    authors: "Karaki, Abboud, Daher, Osman & Oweis",
     venue: "ASME International Mechanical Engineering Congress & Exposition (IMECE 2008), Boston, MA · Paper IMECE2008-67405",
     links: [
       { label: "DOI", url: "https://doi.org/10.1115/IMECE2008-67405" },
