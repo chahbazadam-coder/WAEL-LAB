@@ -12,7 +12,13 @@
      name        display name
      icon        one of the keys in ICONS (see bottom) or leave ""
      location    where it physically is
-     photo       optional image in images/ (machines mainly)
+     photo       optional image in images/ (any item can have one)
+     tags        array of tags. Convention: FIRST tag = the domain it belongs
+                 to (Optics / Microfluidics / Electronics / Chemistry / General),
+                 then descriptive tags (what it is): e.g.
+                   laser        -> ["Optics", "Laser", "Fabrication"]
+                   screwdriver  -> ["General", "Hand tool", "Fastening"]
+                 "General" = shared tools that don't belong to one domain.
 
    type "machine":
      category, status ("available"|"inuse"|"down"|"caution"),
@@ -166,14 +172,19 @@ window.LAB_ASSETS = [
 
   /* ------------------------- TOOLS ------------------------- */
   { id: "tool-multimeter",  no: "EFD-T-001", type: "tool", name: "Digital Multimeter", icon: "tool",
+    tags: ["Electronics", "Measurement"],
     purpose: "Measure voltage, current, resistance, and continuity.", home: "cab-electronics", qty: "3", location: "Electronics Locker, drawer 1" },
   { id: "tool-soldering",   no: "EFD-T-002", type: "tool", name: "Soldering Station", icon: "tool",
+    tags: ["Electronics", "Soldering"],
     purpose: "Solder electronic components and connectors.", home: "cab-electronics", qty: "2", location: "Electronics bench" },
   { id: "tool-screwdrivers",no: "EFD-T-003", type: "tool", name: "Precision Screwdriver Set", icon: "tool",
+    tags: ["General", "Hand tool", "Fastening"],
     purpose: "Small fasteners for enclosures and instruments.", home: "cab-electronics", qty: "1", location: "Electronics Locker" },
   { id: "tool-calipers",    no: "EFD-T-004", type: "tool", name: "Digital Calipers", icon: "tool",
+    tags: ["General", "Measurement"],
     purpose: "Measure dimensions to 0.01 mm.", home: "cab-optics", qty: "2", location: "Optics Cabinet A, drawer 2" },
   { id: "tool-tweezers",    no: "EFD-T-005", type: "tool", name: "Tweezers (assorted)", icon: "tool",
+    tags: ["General", "Hand tool"],
     purpose: "Handle small parts, chips, and optical components.", home: "cab-optics", qty: "6", location: "Optics Cabinet A" }
 
 ];

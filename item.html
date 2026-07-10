@@ -90,6 +90,13 @@
         '<div><div class="kind">' + esc(a.type) + (a.no ? ' · <span style="color:var(--accent)">' + esc(a.no) + '</span>' : '') + '</div>' +
         '<h1>' + esc(a.name) + ' ' + badge(a) + '</h1></div></div>';
 
+      if (a.tags && a.tags.length) {
+        html += '<div class="filter-chips" style="margin:4px 0 10px;">' +
+          a.tags.map(function (t, i) {
+            return '<span class="tag"' + (i === 0 ? ' style="background:var(--accent);color:#fff;"' : '') + '>' + esc(t) + '</span>';
+          }).join('') + '</div>';
+      }
+
       if (a.type === "machine") html += machineView(a);
       else if (a.type === "cabinet") html += cabinetView(a);
       else if (a.type === "tool") html += toolView(a);
