@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Name — Research Lab</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f8fa;
+      --border: #e6e8ec;
+      --text: #1a1d21;
+      --muted: #5c636e;
+      --accent: #2b5ce6;
+      --accent-soft: #eef2fe;
+      --radius: 12px;
+      --maxw: 960px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    /* Header / nav */
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 62px;
+    }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 26px; }
+    .nav-links a { color: var(--muted); font-size: 0.93rem; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .menu-btn { display: none; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text); }
+
+    /* Hero */
+    .hero { padding: 72px 0 60px; }
+    .hero-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 44px; align-items: center; }
+    .hero h1 {
+      font-size: 2.6rem; line-height: 1.15; letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+    .hero p.lede {
+      margin-top: 20px; font-size: 1.15rem; color: var(--muted);
+    }
+    .hero .actions { margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-photo {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .btn {
+      display: inline-block; padding: 11px 20px; border-radius: 8px;
+      font-weight: 600; font-size: 0.95rem; transition: all .15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1e49c4; text-decoration: none; }
+    .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: #eef0f3; text-decoration: none; }
+
+    /* Sections */
+    section { padding: 56px 0; border-top: 1px solid var(--border); }
+    .section-head { margin-bottom: 32px; }
+    .section-head h2 { font-size: 1.6rem; letter-spacing: -0.01em; }
+    .section-head p { color: var(--muted); margin-top: 6px; }
+
+    /* People grid */
+    .grid { display: grid; gap: 22px; }
+    .people-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    .person {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; text-align: center;
+    }
+    .person-photo {
+      width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 14px;
+      object-fit: cover; border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--border);
+      background: var(--accent-soft);
+    }
+    .person h3 { font-size: 1.02rem; }
+    .person .role { color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
+
+    /* Projects */
+    .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; transition: border-color .15s;
+    }
+    .card:hover { border-color: #cfd4dc; }
+    .card-photo {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover;
+      background: var(--accent-soft); border-bottom: 1px solid var(--border);
+    }
+    .card-body { padding: 22px; }
+    .card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.94rem; }
+    .tag {
+      display: inline-block; margin-top: 14px; font-size: 0.78rem; font-weight: 600;
+      color: var(--accent); background: var(--accent-soft);
+      padding: 4px 10px; border-radius: 20px;
+    }
+
+    /* Publications */
+    .pub-list { display: flex; flex-direction: column; gap: 4px; }
+    .pub {
+      padding: 18px 0; border-bottom: 1px solid var(--border);
+      display: flex; gap: 20px; align-items: baseline;
+    }
+    .pub:last-child { border-bottom: none; }
+    .pub .year { color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; min-width: 46px; }
+    .pub .meta h3 { font-size: 1.02rem; font-weight: 600; }
+    .pub .authors { color: var(--muted); font-size: 0.9rem; margin-top: 3px; }
+    .pub .venue { font-size: 0.9rem; margin-top: 3px; font-style: italic; color: var(--muted); }
+    .pub .links { margin-top: 6px; display: flex; gap: 14px; font-size: 0.85rem; font-weight: 600; }
+
+    /* Contact */
+    .contact-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 30px;
+      display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between;
+    }
+    .contact-box div h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 4px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 30px 0; color: var(--muted); font-size: 0.88rem; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+    @media (max-width: 760px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo { order: -1; max-width: 360px; }
+    }
+    @media (max-width: 680px) {
+      .hero h1 { font-size: 2rem; }
+      .nav-links {
+        display: none; position: absolute; top: 62px; left: 0; right: 0;
+        flex-direction: column; gap: 0; background: #fff;
+        border-bottom: 1px solid var(--border); padding: 8px 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 24px; }
+      .menu-btn { display: block; }
+      .pub { flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header id="site-header">
+    <div class="wrap">
+      <nav id="navbar">
+        <div class="brand" id="brand">WAEL <span>Lab</span></div>
+        <div class="nav-links" id="nav-links">
+          <a href="#about">About</a>
+          <a href="#people">People</a>
+          <a href="#research">Research</a>
+          <a href="#publications">Publications</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <div class="hero" id="hero">
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1 id="hero-title">The [Lab Name] Laboratory</h1>
+          <p class="lede" id="hero-lede">
+            We study [your research area]. Led by <strong>Prof. [Professor Name]</strong>
+            at [University / Department], our lab develops [one-line description].
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#research">Explore our research</a>
+            <a class="btn btn-ghost" href="#publications">View publications</a>
+          </div>
+        </div>
+        <!-- Swap src to your own photo, e.g. images/lab-photo.jpg -->
+        <img id="hero-photo" class="hero-photo"
+             src="images/hero.jpg"
+             alt="Lab photo"
+             onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22&gt;&lt;rect width=%22400%22 height=%22300%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2250%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2218%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;images/hero.jpg&lt;/text&gt;&lt;/svg&gt;'">
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>About the lab</h2>
+      </div>
+      <p id="about-text" style="max-width: 720px; color: var(--muted); font-size: 1.05rem;">
+        [Two or three sentences about the lab's mission. What problems do you work on?
+        Why do they matter? Everything in square brackets is a placeholder — replace it.]
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PEOPLE ============ -->
+  <section id="people">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>People</h2>
+        <p>The researchers behind the work.</p>
+      </div>
+      <div class="grid people-grid" id="people-grid">
+
+        <div class="person" id="person-pi">
+          <img class="person-photo" src="images/person-pi.jpg" alt="Prof. Name"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22&gt;&lt;rect width=%22100%22 height=%22100%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2255%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2226%22 font-weight=%22700%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;PN&lt;/text&gt;&lt;/svg&gt;'">
+          <h3>Prof. [Name]</h3>
+          <div class="role">Principal Investigator</div>
+        </div>
+
+        <div class="person" id="person-1">
+          <img class="person-photo" src="images/person-1.jpg" alt="Member 1"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22&gt;&lt;rect width=%22100%22 height=%22100%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2255%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2226%22 font-weight=%22700%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;A1&lt;/text&gt;&lt;/svg&gt;'">
+          <h3>[Member Name]</h3>
+          <div class="role">PhD Student</div>
+        </div>
+
+        <div class="person" id="person-2">
+          <img class="person-photo" src="images/person-2.jpg" alt="Member 2"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22&gt;&lt;rect width=%22100%22 height=%22100%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2255%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2226%22 font-weight=%22700%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;A2&lt;/text&gt;&lt;/svg&gt;'">
+          <h3>[Member Name]</h3>
+          <div class="role">Postdoc</div>
+        </div>
+
+        <div class="person" id="person-3">
+          <img class="person-photo" src="images/person-3.jpg" alt="Member 3"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22&gt;&lt;rect width=%22100%22 height=%22100%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2255%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2226%22 font-weight=%22700%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;A3&lt;/text&gt;&lt;/svg&gt;'">
+          <h3>[Member Name]</h3>
+          <div class="role">MSc Student</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESEARCH / PROJECTS ============ -->
+  <section id="research">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Research</h2>
+        <p>Ongoing projects and areas of focus.</p>
+      </div>
+      <div class="grid projects-grid" id="projects-grid">
+
+        <div class="card" id="project-1">
+          <img class="card-photo" src="images/project-1.jpg" alt="Project 1"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22&gt;&lt;rect width=%22320%22 height=%22180%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2250%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2216%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;project-1.jpg&lt;/text&gt;&lt;/svg&gt;'">
+          <div class="card-body">
+            <h3>[Project One]</h3>
+            <p>[Short description — what question it answers and your approach.]</p>
+            <span class="tag">Theme</span>
+          </div>
+        </div>
+
+        <div class="card" id="project-2">
+          <img class="card-photo" src="images/project-2.jpg" alt="Project 2"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22&gt;&lt;rect width=%22320%22 height=%22180%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2250%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2216%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;project-2.jpg&lt;/text&gt;&lt;/svg&gt;'">
+          <div class="card-body">
+            <h3>[Project Two]</h3>
+            <p>[Short description — what question it answers and your approach.]</p>
+            <span class="tag">Theme</span>
+          </div>
+        </div>
+
+        <div class="card" id="project-3">
+          <img class="card-photo" src="images/project-3.jpg" alt="Project 3"
+               onerror="this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22180%22&gt;&lt;rect width=%22320%22 height=%22180%22 fill=%22%23eef2fe%22/&gt;&lt;text x=%2250%25%22 y=%2250%25%22 fill=%22%232b5ce6%22 font-family=%22sans-serif%22 font-size=%2216%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22&gt;project-3.jpg&lt;/text&gt;&lt;/svg&gt;'">
+          <div class="card-body">
+            <h3>[Project Three]</h3>
+            <p>[Short description — what question it answers and your approach.]</p>
+            <span class="tag">Theme</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PUBLICATIONS ============ -->
+  <section id="publications">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Publications</h2>
+        <p>Selected papers. <a href="#">See full list →</a></p>
+      </div>
+      <div class="pub-list" id="pub-list">
+
+        <div class="pub" id="pub-1">
+          <div class="year">2026</div>
+          <div class="meta">
+            <h3>[Paper Title Goes Here]</h3>
+            <div class="authors">[Author A], [Author B], [Professor Name]</div>
+            <div class="venue">[Conference or Journal Name]</div>
+            <div class="links"><a href="#">PDF</a><a href="#">Code</a><a href="#">DOI</a></div>
+          </div>
+        </div>
+
+        <div class="pub" id="pub-2">
+          <div class="year">2025</div>
+          <div class="meta">
+            <h3>[Paper Title Goes Here]</h3>
+            <div class="authors">[Author A], [Professor Name]</div>
+            <div class="venue">[Conference or Journal Name]</div>
+            <div class="links"><a href="#">PDF</a><a href="#">DOI</a></div>
+          </div>
+        </div>
+
+        <div class="pub" id="pub-3">
+          <div class="year">2024</div>
+          <div class="meta">
+            <h3>[Paper Title Goes Here]</h3>
+            <div class="authors">[Author A], [Author B], [Professor Name]</div>
+            <div class="venue">[Conference or Journal Name]</div>
+            <div class="links"><a href="#">PDF</a><a href="#">Code</a></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <p>Get in touch or find us.</p>
+      </div>
+      <div class="contact-box" id="contact-box">
+        <div>
+          <h4>Email</h4>
+          <a href="mailto:lab@university.edu">lab@university.edu</a>
+        </div>
+        <div>
+          <h4>Address</h4>
+          [Department], [Building / Room]<br>[University], [City]
+        </div>
+        <div>
+          <h4>Links</h4>
+          <a href="#">Google Scholar</a> · <a href="#">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="site-footer">
+    <div class="wrap">
+      <div>© <span id="year"></span> [Lab Name], [University].</div>
+      <div>Built with care.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-btn').addEventListener('click', function () {
+      document.getElementById('nav-links').classList.toggle('open');
+    });
+    document.querySelectorAll('#nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        document.getElementById('nav-links').classList.remove('open');
+      });
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
