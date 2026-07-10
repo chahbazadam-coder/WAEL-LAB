@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machines &amp; Tools — WAEL Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">WAEL <span>Lab</span></div>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#people">Members</a>
+          <a href="index.html#research">Research</a>
+          <a href="machines.html" class="active">Machines &amp; Tools</a>
+          <a href="inventory.html">Inventory</a>
+          <a href="safety.html">Safety</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1 class="page-title">Machines &amp; Tools</h1>
+    <p class="page-sub">Equipment in the lab, current availability, how to operate each one, and its safety sheet.
+       Expand a machine for step-by-step operating instructions.</p>
+
+    <div class="list-controls">
+      <div class="filter-chips" id="filter-chips"></div>
+    </div>
+
+    <div class="grid machine-grid" id="machine-grid"></div>
+
+    <!-- ===================== SMALLER TOOLS ===================== -->
+    <h1 class="page-title" style="margin-top:40px;">Hand tools &amp; small equipment</h1>
+    <p class="page-sub">Shared small tools — where to find them and how many we have.</p>
+    <div class="panel">
+      <div id="tool-list"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap"><div>© <span id="year"></span> WAEL Lab.</div><div>Machines &amp; Tools</div></div>
+  </footer>
+
+  <script>
+  /* =====================================================================
+     EDIT THIS LIST — one entry per machine.
+       status: "available" | "inuse" | "down" | "caution"
+       category: "Optics" | "Microfluidics" | "Electronics" | "Shared"
+       photo: file in images/ (or leave "" for a placeholder)
+       manual / safety: a URL or leave "" to hide the link
+       howto: array of steps shown when the card is expanded
+     ===================================================================== */
+  const MACHINES = [
+    {
+      name: "CO₂ Laser Cutter",
+      category: "Optics",
+      status: "available",
+      location: "Room 1 — bench A",
+      photo: "images/machine-laser.jpg",
+      manual: "",
+      safety: "safety.html#laser",
+      note: "Class 4 laser — goggles required, trained users only.",
+      howto: [
+        "Put on the correct laser safety goggles.",
+        "Turn on exhaust/extraction before the laser.",
+        "Load material, set focus, set power/speed in the software.",
+        "Never leave the laser running unattended.",
+        "Turn off laser, then leave exhaust running 2 min."
+      ]
+    },
+    {
+      name: "Plasma Cleaner",
+      category: "Microfluidics",
+      status: "available",
+      location: "Room 2 — fume hood",
+      photo: "images/machine-plasma.jpg",
+      manual: "",
+      safety: "safety.html#plasma",
+      note: "Used for PDMS–glass bonding.",
+      howto: [
+        "Place PDMS and glass in the chamber, treated faces up.",
+        "Close chamber, start vacuum pump.",
+        "Run plasma for the set time (e.g. 30–45 s).",
+        "Vent, remove parts, bond immediately while activated."
+      ]
+    },
+    {
+      name: "Spin Coater",
+      category: "Microfluidics",
+      status: "down",
+      location: "Room 2 — bench C",
+      photo: "images/machine-spincoater.jpg",
+      manual: "",
+      safety: "safety.html#chemicals",
+      note: "⚠ Out of service — chuck vacuum leak, reported 2026-07-08.",
+      howto: [
+        "Select or program the spin recipe (rpm, ramp, time).",
+        "Center the wafer/slide on the chuck; check vacuum holds.",
+        "Dispense resist, close lid, run program.",
+        "Soft-bake per your process."
+      ]
+    },
+    {
+      name: "Inverted Microscope + Camera",
+      category: "Optics",
+      status: "inuse",
+      location: "Room 1 — optics table",
+      photo: "images/machine-microscope.jpg",
+      manual: "",
+      safety: "",
+      note: "Book informally on the whiteboard.",
+      howto: [
+        "Turn on illumination and camera software.",
+        "Start at low magnification, then focus up.",
+        "Match objective to the correct immersion medium.",
+        "Turn off lamp after use to preserve bulb life."
+      ]
+    },
+    {
+      name: "Syringe Pump (x2)",
+      category: "Microfluidics",
+      status: "available",
+      location: "Room 2 — bench C",
+      photo: "images/machine-syringepump.jpg",
+      manual: "",
+      safety: "",
+      note: "",
+      howto: [
+        "Mount the syringe, set syringe diameter in the menu.",
+        "Set flow rate and volume.",
+        "Prime tubing to remove air before connecting the chip.",
+        "Start; watch the first minute for leaks."
+      ]
+    },
+    {
+      name: "Oscilloscope + Function Generator",
+      category: "Electronics",
+      status: "available",
+      location: "Room 3 — electronics bench",
+      photo: "images/machine-scope.jpg",
+      manual: "",
+      safety: "",
+      note: "",
+      howto: [
+        "Power on, connect probes, compensate the probe if needed.",
+        "Set timebase and vertical scale to see your signal.",
+        "Use Auto-set as a starting point, then fine-tune."
+      ]
+    }
+  ];
+
+  /* Smaller shared tools */
+  const TOOLS = [
+    { name: "Digital multimeter", qty: "3", loc: "Electronics bench drawer 1" },
+    { name: "Soldering station", qty: "2", loc: "Electronics bench" },
+    { name: "Precision screwdriver set", qty: "1", loc: "Toolbox, Room 3" },
+    { name: "Calipers (digital)", qty: "2", loc: "Room 2 drawer" },
+    { name: "Tweezers (assorted)", qty: "6", loc: "Microfluidics bench" }
+  ];
+
+  /* ===================================================================== */
+  const $ = id => document.getElementById(id);
+  const STATUS_LABEL = { available: "Available", inuse: "In use", down: "Down", caution: "Caution" };
+  let activeCat = null;
+
+  function placeholder(label) {
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"><rect width="320" height="180" fill="#eef2fe"/><text x="50%" y="50%" fill="#2b5ce6" font-family="sans-serif" font-size="15" text-anchor="middle" dominant-baseline="middle">' + label + '</text></svg>');
+  }
+
+  function renderFilters() {
+    const cats = Array.from(new Set(MACHINES.map(m => m.category)));
+    const box = $("filter-chips");
+    const mk = (label, val) => {
+      const c = document.createElement("span");
+      c.className = "chip" + (activeCat === val ? " selected" : "");
+      c.textContent = label;
+      c.onclick = () => { activeCat = activeCat === val ? null : val; render(); };
+      return c;
+    };
+    box.innerHTML = "";
+    box.appendChild(mk("All", null));
+    cats.forEach(c => box.appendChild(mk(c, c)));
+  }
+
+  function render() {
+    renderFilters();
+    const grid = $("machine-grid");
+    grid.innerHTML = "";
+    MACHINES.filter(m => !activeCat || m.category === activeCat).forEach(m => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const links = [];
+      if (m.manual) links.push('<a href="' + m.manual + '" target="_blank">Manual</a>');
+      if (m.safety) links.push('<a href="' + m.safety + '">Safety sheet</a>');
+      const howto = (m.howto && m.howto.length)
+        ? '<details class="howto"><summary>How to operate</summary><ol>' +
+          m.howto.map(s => '<li>' + s + '</li>').join('') + '</ol></details>'
+        : '';
+      card.innerHTML =
+        '<img class="machine-photo" alt="' + m.name + '">' +
+        '<div class="machine-body">' +
+          '<div class="machine-head"><div><h3>' + m.name + '</h3>' +
+            '<div class="machine-cat">' + m.category + '</div></div>' +
+            '<span class="badge ' + m.status + '">' + (STATUS_LABEL[m.status] || m.status) + '</span></div>' +
+          '<div class="machine-meta">📍 ' + (m.location || '—') + (m.note ? '<br>' + m.note : '') + '</div>' +
+          (links.length ? '<div class="machine-links">' + links.join('') + '</div>' : '') +
+          howto +
+        '</div>';
+      const img = card.querySelector("img");
+      img.src = m.photo || placeholder(m.name);
+      img.onerror = () => { img.onerror = null; img.src = placeholder(m.name); };
+      grid.appendChild(card);
+    });
+  }
+
+  function renderTools() {
+    const box = $("tool-list");
+    box.innerHTML = "";
+    if (!TOOLS.length) { box.innerHTML = '<div class="empty">No tools listed.</div>'; return; }
+    TOOLS.forEach((t, i) => {
+      const row = document.createElement("div");
+      row.style.cssText = "display:flex;justify-content:space-between;gap:16px;padding:12px 4px;border-bottom:1px solid var(--border);";
+      if (i === TOOLS.length - 1) row.style.borderBottom = "none";
+      row.innerHTML = '<div><strong></strong></div><div style="color:var(--muted);font-size:0.9rem;text-align:right;"></div>';
+      row.children[0].querySelector("strong").textContent = t.name;
+      row.children[1].textContent = "qty " + t.qty + " · " + t.loc;
+      box.appendChild(row);
+    });
+  }
+
+  $("menu-btn").addEventListener("click", () => $("nav-links").classList.toggle("open"));
+  $("year").textContent = new Date().getFullYear();
+  render();
+  renderTools();
+  </script>
+
+</body>
+</html>

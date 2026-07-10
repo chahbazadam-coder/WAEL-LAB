@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safety — WAEL Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">WAEL <span>Lab</span></div>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#people">Members</a>
+          <a href="index.html#research">Research</a>
+          <a href="machines.html">Machines &amp; Tools</a>
+          <a href="inventory.html">Inventory</a>
+          <a href="safety.html" class="active">Safety</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1 class="page-title">Safety</h1>
+    <p class="page-sub">Read before working in the lab. If in doubt, stop and ask.
+       Everything in [brackets] is a placeholder — fill in your lab's real details.</p>
+
+    <!-- ===================== EMERGENCY ===================== -->
+    <div class="panel emergency">
+      <h2>🚨 In an emergency</h2>
+      <div class="emergency-grid">
+        <div><h4>Emergency number</h4>[e.g. 112 / campus security ext. XXXX]</div>
+        <div><h4>Lab safety officer</h4>[Name] — [phone]</div>
+        <div><h4>PI / Professor</h4>[Name] — [phone]</div>
+        <div><h4>Nearest first-aid kit</h4>[location, e.g. by Room 1 door]</div>
+        <div><h4>Eyewash / safety shower</h4>[location]</div>
+        <div><h4>Fire extinguisher</h4>[location + type]</div>
+      </div>
+      <div style="margin-top:16px;font-size:0.92rem;color:var(--text);">
+        <strong>Chemical spill:</strong> [short procedure — evacuate, alert, use spill kit at ___].<br>
+        <strong>Laser incident / eye exposure:</strong> [stop, cover eyes, seek medical attention, report to ___].<br>
+        <strong>Fire:</strong> [raise alarm, evacuate via ___, do not use lifts].
+      </div>
+    </div>
+
+    <!-- ===================== GENERAL RULES ===================== -->
+    <div class="panel">
+      <h2>✅ General lab rules</h2>
+      <ul class="safety-rules">
+        <li>No lone working with lasers, high voltage, or hazardous chemicals.</li>
+        <li>Wear safety glasses / laser goggles rated for the source in use.</li>
+        <li>Closed shoes and lab coat in wet/chemical areas.</li>
+        <li>Know where the nearest exit, eyewash, and extinguisher are.</li>
+        <li>Label every container — contents, your name, date.</li>
+        <li>No food or drink at the benches.</li>
+        <li>Return tools and log any equipment fault on the Machines page.</li>
+        <li>Solvents (acetone, IPA) only in the fume hood, away from ignition.</li>
+        <li>Tie back long hair and remove loose sleeves near rotating equipment.</li>
+        <li>Complete required training before using any Class 3B/4 laser.</li>
+      </ul>
+      <p style="margin-top:12px;font-size:0.9rem;color:var(--muted);">Edit these to match your institution's official rules.</p>
+    </div>
+
+    <!-- ===================== PER-MACHINE SAFETY ===================== -->
+    <div class="panel">
+      <h2>🛠️ Machine-specific safety</h2>
+      <p style="color:var(--muted);font-size:0.92rem;margin-bottom:14px;">
+        Linked from each machine on the <a href="machines.html">Machines &amp; Tools</a> page.
+        Add the official manual/SOP link for each.</p>
+
+      <div id="laser" style="padding:14px 0;border-top:1px solid var(--border);">
+        <h3 style="font-size:1.02rem;">Laser cutter / lasers <span class="badge caution">Caution</span></h3>
+        <p style="color:var(--muted);font-size:0.92rem;margin-top:6px;">
+          Class 4 laser. Trained users only. Correct-wavelength goggles required. Extraction on before use.
+          Never bypass interlocks. [Link official laser SOP →]</p>
+      </div>
+      <div id="plasma" style="padding:14px 0;border-top:1px solid var(--border);">
+        <h3 style="font-size:1.02rem;">Plasma cleaner</h3>
+        <p style="color:var(--muted);font-size:0.92rem;margin-top:6px;">
+          High voltage + vacuum. Do not open under vacuum. [Link SOP →]</p>
+      </div>
+      <div id="chemicals" style="padding:14px 0;border-top:1px solid var(--border);">
+        <h3 style="font-size:1.02rem;">Chemicals &amp; solvents</h3>
+        <p style="color:var(--muted);font-size:0.92rem;margin-top:6px;">
+          Acetone, IPA, photoresist, developers — flammable/irritant. Fume hood only, gloves, no ignition sources.
+          Store per compatibility. [Link to SDS folder →]</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap"><div>© <span id="year"></span> WAEL Lab.</div><div>Safety</div></div>
+  </footer>
+
+  <script>
+    document.getElementById("menu-btn").addEventListener("click", function () {
+      document.getElementById("nav-links").classList.toggle("open");
+    });
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
