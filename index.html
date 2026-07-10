@@ -87,7 +87,11 @@
       box-shadow: 0 0 0 1px var(--border); background: var(--accent-soft); }
     .person h3 { font-size: 1rem; }
     .person .role { color: var(--accent); font-size: 0.82rem; font-weight: 600; margin-top: 2px; }
-    .person .bio { color: var(--muted); font-size: 0.83rem; margin-top: 8px; }
+    .person .affil { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+    .person .bio { color: var(--muted); font-size: 0.83rem; margin-top: 10px; }
+    .person .interests { color: var(--accent); font-size: 0.76rem; margin-top: 8px; line-height: 1.5; }
+    .person .contact { color: var(--muted); font-size: 0.78rem; margin-top: 10px; line-height: 1.5; }
+    .person .contact a { font-weight: 600; }
 
     /* Publications */
     .pub-list { max-width: 780px; margin: 0 auto; }
@@ -151,7 +155,8 @@
           <h1>The <span class="grad">Experimental Fluid</span><br>Dynamics Laboratory</h1>
           <p class="lede">
             We design and build integrated micro-scale devices and instrumentation —
-            where fluids, light, and electronics meet. Led by Dr. Wael Itani at [University].
+            where fluids, light, and electronics meet. Led by Dr. Wael Itani, Department of
+            Mechanical Engineering, American University of Beirut.
           </p>
           <div class="actions">
             <a class="btn btn-hero" href="#areas">Explore our research</a>
@@ -253,21 +258,30 @@
                onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,'+encodeURIComponent('&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'&gt;&lt;rect width=\'100\' height=\'100\' fill=\'#eef2fe\'/&gt;&lt;text x=\'50%\' y=\'55%\' fill=\'#2b5ce6\' font-family=\'sans-serif\' font-size=\'26\' font-weight=\'700\' text-anchor=\'middle\' dominant-baseline=\'middle\'&gt;WI&lt;/text&gt;&lt;/svg&gt;')">
           <h3>Dr. Wael Itani</h3>
           <div class="role">Principal Investigator</div>
-          <p class="bio">[Research focus, background.]</p>
+          <div class="affil">Assistant Professor · Mechanical Engineering</div>
+          <p class="bio">Fluid dynamics &amp; quantum computing — accelerating multiscale simulations of fluid flow, including quantum algorithms and lattice methods.</p>
+          <div class="interests">Fluid dynamics · Kinetic theory · Lattice methods · Quantum algorithms · Photonics</div>
+          <div class="contact"><a href="mailto:wi07@aub.edu.lb">wi07@aub.edu.lb</a><br>RGB 411 · ext 3554</div>
         </div>
         <div class="person">
           <img class="person-photo" src="images/honein.jpg" alt="Dr. Theresa Honein"
                onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,'+encodeURIComponent('&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'&gt;&lt;rect width=\'100\' height=\'100\' fill=\'#eef2fe\'/&gt;&lt;text x=\'50%\' y=\'55%\' fill=\'#2b5ce6\' font-family=\'sans-serif\' font-size=\'26\' font-weight=\'700\' text-anchor=\'middle\' dominant-baseline=\'middle\'&gt;TH&lt;/text&gt;&lt;/svg&gt;')">
           <h3>Dr. Theresa Honein</h3>
-          <div class="role">[Role]</div>
-          <p class="bio">[Research topic.]</p>
+          <div class="role">Assistant Professor</div>
+          <div class="affil">Mechanical Engineering</div>
+          <p class="bio">Dynamics &amp; mechanics — physically accurate simulation of constrained and impacting rigid-body systems.</p>
+          <div class="interests">Dynamics · Mechanics · Constraints &amp; holonomy · Motion planning · Nonsmooth dynamics</div>
+          <div class="contact"><a href="mailto:th72@aub.edu.lb">th72@aub.edu.lb</a><br>Bechtel 532 · ext 3429</div>
         </div>
         <div class="person">
           <img class="person-photo" src="images/lakkis.jpg" alt="Dr. Issam Lakkis"
                onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,'+encodeURIComponent('&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'&gt;&lt;rect width=\'100\' height=\'100\' fill=\'#eef2fe\'/&gt;&lt;text x=\'50%\' y=\'55%\' fill=\'#2b5ce6\' font-family=\'sans-serif\' font-size=\'26\' font-weight=\'700\' text-anchor=\'middle\' dominant-baseline=\'middle\'&gt;IL&lt;/text&gt;&lt;/svg&gt;')">
           <h3>Dr. Issam Lakkis</h3>
-          <div class="role">[Role]</div>
-          <p class="bio">[Research topic.]</p>
+          <div class="role">Professor &amp; Chairperson</div>
+          <div class="affil">Mechanical Engineering</div>
+          <p class="bio">MEMS &amp; microfluidics — grid-free numerical modeling of transport phenomena, bio-flows, and multiscale micro-devices.</p>
+          <div class="interests">Microfluidics · MEMS/NEMS · Grid-free methods · Transport phenomena · Molecular dynamics</div>
+          <div class="contact"><a href="mailto:il01@aub.edu.lb">il01@aub.edu.lb</a><br>Bechtel 309a · ext 3636</div>
         </div>
       </div>
     </div>
@@ -319,17 +333,17 @@
       <h2>Interested in joining or collaborating?</h2>
       <p>We welcome motivated students and research partners. Get in touch.</p>
       <div class="actions">
-        <a class="btn btn-hero" href="mailto:lab@university.edu">lab@university.edu</a>
+        <a class="btn btn-hero" href="mailto:wi07@aub.edu.lb">wi07@aub.edu.lb</a>
         <a class="btn btn-hero-ghost" href="#">Google Scholar</a>
       </div>
-      <p style="margin-top:18px;font-size:0.9rem;">[Department], [Building/Room] · [University], [City]</p>
+      <p style="margin-top:18px;font-size:0.9rem;">Department of Mechanical Engineering · American University of Beirut, Beirut, Lebanon</p>
     </div>
   </div>
 
   <!-- ============ FOOTER ============ -->
   <footer>
     <div class="wrap">
-      <div>© <span id="year"></span> Experimental Fluid Dynamics Laboratory, [University].</div>
+      <div>© <span id="year"></span> Experimental Fluid Dynamics Laboratory · American University of Beirut.</div>
       <div>Microfluidics · Optics · Electronics</div>
     </div>
   </footer>
