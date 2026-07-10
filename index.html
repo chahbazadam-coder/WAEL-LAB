@@ -264,19 +264,9 @@
       <div class="sec-head">
         <div class="kicker">Output</div>
         <h2>Selected publications</h2>
-        <p>[placeholder]</p>
+        <p>Research output from the lab.</p>
       </div>
-      <div class="pub-list">
-        <div class="pub">
-          <div class="year">[year]</div>
-          <div>
-            <h3>[Paper title]</h3>
-            <div class="authors">[Authors]</div>
-            <div class="venue">[Journal / conference]</div>
-            <div class="links"><a href="#">[link]</a></div>
-          </div>
-        </div>
-      </div>
+      <div class="pub-list" id="pub-list"></div>
     </div>
   </section>
 
@@ -301,6 +291,7 @@
   </footer>
 
   <script src="data/members.js"></script>
+  <script src="data/publications.js"></script>
   <script>
     // Mobile menu
     document.getElementById("menu-btn").addEventListener("click", function () {
@@ -325,6 +316,24 @@
           '<div class="role">' + esc(m.title || "") + '</div>' +
           (contact.length ? '<div class="contact">' + contact.join('<br>') + '</div>' : '') +
           '</div>';
+      }).join("");
+    })();
+
+    // Publications from data/publications.js
+    (function () {
+      function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c];});}
+      var box = document.getElementById("pub-list");
+      if (!box || !window.LAB_PUBLICATIONS) return;
+      if (!window.LAB_PUBLICATIONS.length) { box.innerHTML = '<div class="empty">[placeholder — no publications yet]</div>'; return; }
+      box.innerHTML = window.LAB_PUBLICATIONS.map(function (p) {
+        var links = (p.links || []).filter(function (l) { return l.url; })
+          .map(function (l) { return '<a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.label) + '</a>'; }).join("");
+        return '<div class="pub"><div class="year">' + esc(p.year) + '</div><div>' +
+          '<h3>' + esc(p.title) + '</h3>' +
+          '<div class="authors">' + esc(p.authors) + '</div>' +
+          '<div class="venue">' + esc(p.venue) + '</div>' +
+          (links ? '<div class="links">' + links + '</div>' : '') +
+          '</div></div>';
       }).join("");
     })();
 
