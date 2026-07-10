@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory — Lab Name</title>
+  <style>
+    :root {
+      --bg: #ffffff; --surface: #f7f8fa; --border: #e6e8ec;
+      --text: #1a1d21; --muted: #5c636e; --accent: #2b5ce6;
+      --accent-soft: #eef2fe; --good: #16a34a; --danger: #dc2626;
+      --radius: 12px; --maxw: 960px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text); background: var(--bg); line-height: 1.6; font-size: 16px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+    header {
+      position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+    }
+    nav { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+    .brand { font-weight: 700; font-size: 1.05rem; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 22px; }
+    .nav-links a { color: var(--muted); font-size: 0.93rem; font-weight: 500; }
+    .nav-links a.active { color: var(--text); }
+
+    h1.page-title { font-size: 1.9rem; letter-spacing: -0.02em; margin: 36px 0 4px; }
+    .page-sub { color: var(--muted); margin-bottom: 30px; }
+
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px; margin-bottom: 24px;
+    }
+    .panel h2 { font-size: 1.1rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+    /* Scanner */
+    #scanner-area { display: none; margin-bottom: 14px; }
+    #video { width: 100%; max-width: 420px; border-radius: 10px; background: #000; aspect-ratio: 4/3; object-fit: cover; }
+    .scan-status { font-size: 0.88rem; color: var(--muted); margin-top: 8px; }
+
+    /* Form */
+    .form-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+    .field { flex: 1; min-width: 160px; }
+    .field label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.03em; }
+    .field input, .field textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.95rem; font-family: inherit; background: #fff;
+    }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+
+    /* Tag chips */
+    .tags-label { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin: 6px 0 8px; text-transform: uppercase; letter-spacing: 0.03em; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+      padding: 6px 13px; border-radius: 20px; font-size: 0.86rem; font-weight: 600;
+      border: 1px solid var(--border); background: #fff; color: var(--muted);
+      transition: all .12s; user-select: none;
+    }
+    .chip:hover { border-color: var(--accent); }
+    .chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .chip.suggested { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 2px var(--accent-soft); }
+    .chip.suggested::before { content: "★"; font-size: 0.8em; }
+    .chip.selected.suggested::before { content: "★"; }
+
+    .btn {
+      display: inline-block; padding: 10px 18px; border-radius: 8px; border: none;
+      font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all .15s; font-family: inherit;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1e49c4; }
+    .btn-ghost { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: #eef0f3; }
+    .btn-sm { padding: 6px 12px; font-size: 0.83rem; }
+    .btn-danger { color: var(--danger); }
+    .actions-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
+
+    /* Inventory list */
+    .list-controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+    #search { flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .count-badge { font-size: 0.85rem; color: var(--muted); }
+
+    .item {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; gap: 16px;
+    }
+    .item-main h3 { font-size: 1.02rem; }
+    .item-meta { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
+    .item-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+    .item-tag { font-size: 0.75rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 14px; }
+    .item-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; white-space: nowrap; }
+    .empty { text-align: center; color: var(--muted); padding: 40px 0; }
+
+    .hint { font-size: 0.85rem; color: var(--muted); background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; }
+
+    @media (max-width: 640px) {
+      .item { flex-direction: column; }
+      .item-actions { flex-direction: row; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">WAEL <span>Lab</span></div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="inventory.html" class="active">Inventory</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1 class="page-title">Lab Inventory</h1>
+    <p class="page-sub">Scan or add an item, tag it, and it's logged automatically. Suggested tags are marked with a ★.</p>
+
+    <!-- ============ ADD / SCAN PANEL ============ -->
+    <div class="panel">
+      <h2>➕ Add an item</h2>
+
+      <div class="actions-bar" style="margin-bottom:14px;">
+        <button class="btn btn-ghost btn-sm" id="scan-toggle">📷 Scan barcode / QR</button>
+        <span class="scan-status" id="scan-support"></span>
+      </div>
+
+      <div id="scanner-area">
+        <video id="video" playsinline></video>
+        <div class="scan-status" id="scan-status">Point the camera at a barcode…</div>
+      </div>
+
+      <div class="form-row">
+        <div class="field" style="flex:2;">
+          <label for="f-name">Item name</label>
+          <input id="f-name" type="text" placeholder="e.g. Sodium Chloride 500g" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-code">Barcode / ID</label>
+          <input id="f-code" type="text" placeholder="scanned or typed" autocomplete="off">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="f-qty">Quantity</label>
+          <input id="f-qty" type="text" placeholder="e.g. 3">
+        </div>
+        <div class="field">
+          <label for="f-loc">Location</label>
+          <input id="f-loc" type="text" placeholder="e.g. Shelf B2 / Freezer 1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="f-notes">Notes</label>
+          <input id="f-notes" type="text" placeholder="optional">
+        </div>
+      </div>
+
+      <div class="tags-label">Tags &nbsp;<span style="font-weight:400;text-transform:none;letter-spacing:0;">— ★ = smart suggestion, click to add. Type a new tag to create one.</span></div>
+      <div class="chip-row" id="tag-palette"></div>
+      <div class="form-row" style="margin-bottom:10px;">
+        <div class="field" style="max-width:260px;">
+          <input id="new-tag" type="text" placeholder="+ new tag, press Enter" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="actions-bar">
+        <button class="btn btn-primary" id="save-btn">Save item</button>
+        <button class="btn btn-ghost" id="clear-btn">Clear</button>
+      </div>
+    </div>
+
+    <!-- ============ INVENTORY LIST ============ -->
+    <div class="panel">
+      <h2>📦 Logged items <span class="count-badge" id="count"></span></h2>
+
+      <div class="list-controls">
+        <input id="search" type="text" placeholder="Search items…">
+        <button class="btn btn-ghost btn-sm" id="export-btn">⬇ Export</button>
+        <button class="btn btn-ghost btn-sm" id="import-btn">⬆ Import</button>
+        <input type="file" id="import-file" accept="application/json" style="display:none;">
+      </div>
+      <div class="filter-chips" id="filter-chips" style="margin-bottom:16px;"></div>
+
+      <div id="item-list"></div>
+    </div>
+  </div>
+
+  <script>
+  /* =====================================================================
+     SMART-TAG CONFIG  —  edit these to fit your lab.
+     Each rule: if any keyword appears in the item name or barcode,
+     the listed tags get suggested (★).
+     ===================================================================== */
+  const TAG_RULES = [
+    { keywords: ["acid", "hydroxide", "chloride", "sulfate", "ethanol", "reagent", "solution"], tags: ["Chemical"] },
+    { keywords: ["acid", "toxic", "flammable", "corrosive", "hazard"],                          tags: ["Hazard"] },
+    { keywords: ["freezer", "-20", "-80", "cold", "fridge", "enzyme", "antibody"],              tags: ["Cold storage"] },
+    { keywords: ["pipette", "tip", "tube", "plate", "flask", "beaker", "glassware"],            tags: ["Consumable"] },
+    { keywords: ["microscope", "centrifuge", "scale", "balance", "pcr", "spectro"],             tags: ["Equipment"] },
+    { keywords: ["kit", "assay", "buffer", "media", "agar"],                                    tags: ["Reagent kit"] },
+    { keywords: ["glove", "mask", "goggle", "coat", "safety"],                                  tags: ["Safety gear"] },
+  ];
+
+  // Base tags always shown in the palette (plus any you create).
+  const BASE_TAGS = ["Chemical", "Hazard", "Cold storage", "Consumable", "Equipment", "Reagent kit", "Safety gear", "Low stock"];
+
+  /* ===================================================================== */
+
+  const STORE_KEY = "lab_inventory_items";
+  const TAGS_KEY  = "lab_inventory_tags";
+
+  let items = load(STORE_KEY, []);
+  let allTags = Array.from(new Set([...BASE_TAGS, ...load(TAGS_KEY, [])]));
+  let selectedTags = new Set();
+  let activeFilter = null;
+
+  const $ = id => document.getElementById(id);
+
+  function load(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+    catch { return fallback; }
+  }
+  function save() {
+    localStorage.setItem(STORE_KEY, JSON.stringify(items));
+    localStorage.setItem(TAGS_KEY, JSON.stringify(allTags));
+  }
+
+  /* ---------- SMART SUGGESTION ENGINE ---------- */
+  function tokenize(text) {
+    return (text || "").toLowerCase().split(/[^a-z0-9-]+/).filter(Boolean);
+  }
+  function suggestTags(name, code) {
+    const text = (name + " " + code).toLowerCase();
+    const tokens = tokenize(name);
+    const scores = {};
+    const bump = (t, n) => { scores[t] = (scores[t] || 0) + n; };
+
+    // 1) Rule-based: keyword -> tags
+    for (const rule of TAG_RULES) {
+      if (rule.keywords.some(k => text.includes(k))) rule.tags.forEach(t => bump(t, 3));
+    }
+    // 2) Learned from history: tags used before for items sharing a word
+    for (const it of items) {
+      const itTokens = new Set(tokenize(it.name));
+      const overlap = tokens.filter(t => itTokens.has(t)).length;
+      if (overlap > 0) (it.tags || []).forEach(t => bump(t, overlap));
+    }
+    return Object.entries(scores).sort((a, b) => b[1] - a[1]).map(e => e[0]);
+  }
+
+  /* ---------- TAG PALETTE ---------- */
+  function renderPalette() {
+    const suggested = new Set(suggestTags($("f-name").value, $("f-code").value));
+    // ensure suggested tags exist in palette
+    suggested.forEach(t => { if (!allTags.includes(t)) allTags.push(t); });
+
+    const palette = $("tag-palette");
+    palette.innerHTML = "";
+    // suggested first, then the rest
+    const ordered = [...allTags].sort((a, b) => (suggested.has(b) - suggested.has(a)));
+    ordered.forEach(tag => {
+      const chip = document.createElement("span");
+      chip.className = "chip"
+        + (selectedTags.has(tag) ? " selected" : "")
+        + (suggested.has(tag) ? " suggested" : "");
+      chip.textContent = tag;
+      chip.onclick = () => {
+        selectedTags.has(tag) ? selectedTags.delete(tag) : selectedTags.add(tag);
+        renderPalette();
+      };
+      palette.appendChild(chip);
+    });
+  }
+
+  /* ---------- SAVE ITEM ---------- */
+  function saveItem() {
+    const name = $("f-name").value.trim();
+    if (!name) { $("f-name").focus(); alert("Please enter an item name."); return; }
+    const item = {
+      id: Date.now() + "-" + Math.floor(performance.now()),
+      name,
+      code: $("f-code").value.trim(),
+      qty: $("f-qty").value.trim(),
+      loc: $("f-loc").value.trim(),
+      notes: $("f-notes").value.trim(),
+      tags: [...selectedTags],
+      added: new Date().toISOString().slice(0, 10)
+    };
+    items.unshift(item);
+    // remember any new tags
+    item.tags.forEach(t => { if (!allTags.includes(t)) allTags.push(t); });
+    save();
+    clearForm();
+    renderList();
+    flashStatus("✓ Saved: " + name);
+  }
+  function clearForm() {
+    ["f-name","f-code","f-qty","f-loc","f-notes"].forEach(id => $(id).value = "");
+    selectedTags.clear();
+    renderPalette();
+    $("f-name").focus();
+  }
+  function flashStatus(msg) {
+    const s = $("scan-status"); if (!s) return;
+    const prev = s.textContent; s.style.color = "var(--good)"; s.textContent = msg;
+    setTimeout(() => { s.style.color = ""; s.textContent = prev; }, 1800);
+  }
+
+  /* ---------- INVENTORY LIST ---------- */
+  function renderFilters() {
+    const box = $("filter-chips");
+    box.innerHTML = "";
+    const used = Array.from(new Set(items.flatMap(i => i.tags || []))).sort();
+    if (!used.length) return;
+    const mk = (label, val) => {
+      const c = document.createElement("span");
+      c.className = "chip" + (activeFilter === val ? " selected" : "");
+      c.textContent = label;
+      c.onclick = () => { activeFilter = (activeFilter === val ? null : val); renderList(); };
+      return c;
+    };
+    box.appendChild(mk("All", null));
+    used.forEach(t => box.appendChild(mk(t, t)));
+  }
+
+  function renderList() {
+    renderFilters();
+    const q = $("search").value.toLowerCase();
+    const list = $("item-list");
+    let shown = items.filter(it => {
+      const matchQ = !q || (it.name + " " + it.code + " " + it.loc + " " + (it.tags||[]).join(" ")).toLowerCase().includes(q);
+      const matchF = !activeFilter || (it.tags || []).includes(activeFilter);
+      return matchQ && matchF;
+    });
+    $("count").textContent = "(" + items.length + ")";
+
+    if (!shown.length) {
+      list.innerHTML = '<div class="empty">' + (items.length ? "No items match your search/filter." : "Nothing logged yet. Scan or add your first item above.") + '</div>';
+      return;
+    }
+    list.innerHTML = "";
+    shown.forEach(it => {
+      const el = document.createElement("div");
+      el.className = "item";
+      const meta = [it.code && ("#" + it.code), it.qty && ("qty " + it.qty), it.loc, "added " + it.added]
+        .filter(Boolean).join(" · ");
+      el.innerHTML =
+        '<div class="item-main">' +
+          '<h3></h3>' +
+          '<div class="item-meta"></div>' +
+          (it.notes ? '<div class="item-meta"></div>' : '') +
+          '<div class="item-tags"></div>' +
+        '</div>' +
+        '<div class="item-actions">' +
+          '<button class="btn btn-ghost btn-sm btn-danger" data-del="'+it.id+'">Delete</button>' +
+        '</div>';
+      el.querySelector("h3").textContent = it.name;
+      el.querySelectorAll(".item-meta")[0].textContent = meta;
+      if (it.notes) el.querySelectorAll(".item-meta")[1].textContent = "📝 " + it.notes;
+      const tagBox = el.querySelector(".item-tags");
+      (it.tags || []).forEach(t => {
+        const s = document.createElement("span"); s.className = "item-tag"; s.textContent = t; tagBox.appendChild(s);
+      });
+      el.querySelector("[data-del]").onclick = () => {
+        if (confirm("Delete \"" + it.name + "\"?")) { items = items.filter(x => x.id !== it.id); save(); renderList(); }
+      };
+      list.appendChild(el);
+    });
+  }
+
+  /* ---------- CAMERA SCANNING ---------- */
+  let stream = null, scanning = false, detector = null;
+  function setupScanSupport() {
+    if ("BarcodeDetector" in window) {
+      $("scan-support").textContent = "Camera scanning supported.";
+    } else {
+      $("scan-support").textContent = "Camera scanning isn't supported in this browser — you can still type the barcode. (Works best in Chrome/Edge/Android.)";
+      $("scan-toggle").disabled = false;
+    }
+  }
+  async function toggleScan() {
+    const area = $("scanner-area");
+    if (scanning) { stopScan(); return; }
+    if (!("BarcodeDetector" in window)) {
+      alert("This browser can't scan with the camera. Please type the barcode into the 'Barcode / ID' field, or open the site in Chrome/Edge.");
+      return;
+    }
+    try {
+      detector = new BarcodeDetector();
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      $("video").srcObject = stream;
+      await $("video").play();
+      area.style.display = "block";
+      scanning = true;
+      $("scan-toggle").textContent = "✕ Stop scanning";
+      scanLoop();
+    } catch (e) {
+      alert("Couldn't access the camera: " + e.message + "\nMake sure you're on https:// and allowed camera access.");
+    }
+  }
+  async function scanLoop() {
+    if (!scanning) return;
+    try {
+      const codes = await detector.detect($("video"));
+      if (codes.length) {
+        const val = codes[0].rawValue;
+        $("f-code").value = val;
+        $("scan-status").textContent = "Scanned: " + val + "  ✓";
+        navigator.vibrate && navigator.vibrate(120);
+        renderPalette();
+        $("f-name").focus();
+        stopScan();
+        return;
+      }
+    } catch {}
+    requestAnimationFrame(scanLoop);
+  }
+  function stopScan() {
+    scanning = false;
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    $("scanner-area").style.display = "none";
+    $("scan-toggle").textContent = "📷 Scan barcode / QR";
+  }
+
+  /* ---------- EXPORT / IMPORT ---------- */
+  function exportData() {
+    const blob = new Blob([JSON.stringify({ items, tags: allTags }, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "lab-inventory.json";
+    a.click();
+  }
+  function importData(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!Array.isArray(data.items)) throw new Error("bad file");
+        if (confirm("Import " + data.items.length + " items? This merges with your current list.")) {
+          const seen = new Set(items.map(i => i.id));
+          data.items.forEach(i => { if (!seen.has(i.id)) items.push(i); });
+          if (Array.isArray(data.tags)) allTags = Array.from(new Set([...allTags, ...data.tags]));
+          save(); renderList(); renderPalette();
+          alert("Imported.");
+        }
+      } catch { alert("That doesn't look like a valid inventory export file."); }
+    };
+    reader.readAsText(file);
+  }
+
+  /* ---------- WIRE UP ---------- */
+  $("f-name").addEventListener("input", renderPalette);
+  $("f-code").addEventListener("input", renderPalette);
+  $("new-tag").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const t = e.target.value.trim();
+      if (t) { if (!allTags.includes(t)) allTags.push(t); selectedTags.add(t); e.target.value = ""; renderPalette(); }
+    }
+  });
+  $("save-btn").onclick = saveItem;
+  $("clear-btn").onclick = clearForm;
+  $("scan-toggle").onclick = toggleScan;
+  $("search").addEventListener("input", renderList);
+  $("export-btn").onclick = exportData;
+  $("import-btn").onclick = () => $("import-file").click();
+  $("import-file").onchange = e => { if (e.target.files[0]) importData(e.target.files[0]); };
+
+  setupScanSupport();
+  renderPalette();
+  renderList();
+  </script>
+
+</body>
+</html>
