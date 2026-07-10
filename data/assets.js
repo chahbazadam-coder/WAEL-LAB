@@ -5,7 +5,7 @@
 
    Shared fields:
      id          unique, url-safe (letters/numbers/dashes). NEVER reuse.
-     no          the printed asset number on the sticker, e.g. "WAEL-M-001".
+     no          the printed asset number on the sticker, e.g. "EFD-M-001".
                  Convention: M = machine, C = cabinet, T = tool. Keep it
                  STABLE once printed — give each new item the next free number.
      type        "machine" | "cabinet" | "tool"
@@ -42,7 +42,7 @@ window.LAB_ASSETS = [
 
   /* ------------------------- MACHINES ------------------------- */
   {
-    id: "laser-cutter", no: "WAEL-M-001", type: "machine", name: "CO₂ Laser Cutter", icon: "laser",
+    id: "laser-cutter", no: "EFD-M-001", type: "machine", name: "CO₂ Laser Cutter", icon: "laser",
     category: "Optics", status: "available", location: "Room 1 — bench A",
     photo: "images/machine-laser.jpg",
     description: "Cuts and engraves acrylic, paper, and thin polymers. Used for rapid microfluidic mould and jig prototyping.",
@@ -59,7 +59,7 @@ window.LAB_ASSETS = [
     note: "Class 4 laser — trained users only."
   },
   {
-    id: "plasma-cleaner", no: "WAEL-M-002", type: "machine", name: "Plasma Cleaner", icon: "plasma",
+    id: "plasma-cleaner", no: "EFD-M-002", type: "machine", name: "Plasma Cleaner", icon: "plasma",
     category: "Microfluidics", status: "available", location: "Room 2 — fume hood",
     photo: "images/machine-plasma.jpg",
     description: "Oxygen-plasma surface activation for irreversible PDMS–glass bonding.",
@@ -75,7 +75,7 @@ window.LAB_ASSETS = [
     note: ""
   },
   {
-    id: "spin-coater", no: "WAEL-M-003", type: "machine", name: "Spin Coater", icon: "spincoater",
+    id: "spin-coater", no: "EFD-M-003", type: "machine", name: "Spin Coater", icon: "spincoater",
     category: "Microfluidics", status: "down", location: "Room 2 — bench C",
     photo: "images/machine-spincoater.jpg",
     description: "Deposits uniform thin films of photoresist on wafers and slides.",
@@ -97,7 +97,7 @@ window.LAB_ASSETS = [
     }
   },
   {
-    id: "microscope", no: "WAEL-M-004", type: "machine", name: "Inverted Microscope + Camera", icon: "microscope",
+    id: "microscope", no: "EFD-M-004", type: "machine", name: "Inverted Microscope + Camera", icon: "microscope",
     category: "Optics", status: "inuse", location: "Room 1 — optics table",
     photo: "images/machine-microscope.jpg",
     description: "Brightfield/fluorescence imaging of chips and samples, with digital camera capture.",
@@ -113,7 +113,7 @@ window.LAB_ASSETS = [
     note: "Book informally on the whiteboard."
   },
   {
-    id: "syringe-pump", no: "WAEL-M-005", type: "machine", name: "Syringe Pump (×2)", icon: "pump",
+    id: "syringe-pump", no: "EFD-M-005", type: "machine", name: "Syringe Pump (×2)", icon: "pump",
     category: "Microfluidics", status: "available", location: "Room 2 — bench C",
     photo: "images/machine-syringepump.jpg",
     description: "Precise, programmable flow control for driving fluids through microfluidic chips.",
@@ -129,7 +129,7 @@ window.LAB_ASSETS = [
     note: ""
   },
   {
-    id: "oscilloscope", no: "WAEL-M-006", type: "machine", name: "Oscilloscope + Function Generator", icon: "scope",
+    id: "oscilloscope", no: "EFD-M-006", type: "machine", name: "Oscilloscope + Function Generator", icon: "scope",
     category: "Electronics", status: "available", location: "Room 3 — electronics bench",
     photo: "images/machine-scope.jpg",
     description: "Signal generation and measurement for testing custom control electronics and sensors.",
@@ -152,28 +152,28 @@ window.LAB_ASSETS = [
 
   /* ------------------------- CABINETS / LOCKERS ------------------------- */
   {
-    id: "cab-optics", no: "WAEL-C-001", type: "cabinet", name: "Optics Cabinet A", icon: "cabinet",
+    id: "cab-optics", no: "EFD-C-001", type: "cabinet", name: "Optics Cabinet A", icon: "cabinet",
     location: "Room 1 — beside optics table",
     description: "Optical components and mounts. Return items to their labeled slots.",
     contains: [ "tool-calipers", "tool-tweezers" ]
   },
   {
-    id: "cab-electronics", no: "WAEL-C-002", type: "cabinet", name: "Electronics Locker", icon: "cabinet",
+    id: "cab-electronics", no: "EFD-C-002", type: "cabinet", name: "Electronics Locker", icon: "cabinet",
     location: "Room 3 — under the bench",
     description: "Hand tools and small electronics equipment.",
     contains: [ "tool-multimeter", "tool-soldering", "tool-screwdrivers" ]
   },
 
   /* ------------------------- TOOLS ------------------------- */
-  { id: "tool-multimeter",  no: "WAEL-T-001", type: "tool", name: "Digital Multimeter", icon: "tool",
+  { id: "tool-multimeter",  no: "EFD-T-001", type: "tool", name: "Digital Multimeter", icon: "tool",
     purpose: "Measure voltage, current, resistance, and continuity.", home: "cab-electronics", qty: "3", location: "Electronics Locker, drawer 1" },
-  { id: "tool-soldering",   no: "WAEL-T-002", type: "tool", name: "Soldering Station", icon: "tool",
+  { id: "tool-soldering",   no: "EFD-T-002", type: "tool", name: "Soldering Station", icon: "tool",
     purpose: "Solder electronic components and connectors.", home: "cab-electronics", qty: "2", location: "Electronics bench" },
-  { id: "tool-screwdrivers",no: "WAEL-T-003", type: "tool", name: "Precision Screwdriver Set", icon: "tool",
+  { id: "tool-screwdrivers",no: "EFD-T-003", type: "tool", name: "Precision Screwdriver Set", icon: "tool",
     purpose: "Small fasteners for enclosures and instruments.", home: "cab-electronics", qty: "1", location: "Electronics Locker" },
-  { id: "tool-calipers",    no: "WAEL-T-004", type: "tool", name: "Digital Calipers", icon: "tool",
+  { id: "tool-calipers",    no: "EFD-T-004", type: "tool", name: "Digital Calipers", icon: "tool",
     purpose: "Measure dimensions to 0.01 mm.", home: "cab-optics", qty: "2", location: "Optics Cabinet A, drawer 2" },
-  { id: "tool-tweezers",    no: "WAEL-T-005", type: "tool", name: "Tweezers (assorted)", icon: "tool",
+  { id: "tool-tweezers",    no: "EFD-T-005", type: "tool", name: "Tweezers (assorted)", icon: "tool",
     purpose: "Handle small parts, chips, and optical components.", home: "cab-optics", qty: "6", location: "Optics Cabinet A" }
 
 ];
