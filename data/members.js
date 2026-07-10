@@ -18,21 +18,21 @@ window.LAB_MEMBERS = [
   /* ------------------------- PROFESSORS ------------------------- */
   {
     group: "Professor", name: "Dr. Wael Itani", title: "Assistant Professor",
-    photo: "images/itani.jpg", initials: "WI",
+    photo: "images/itani.png", initials: "WI",
     email: "wi07@aub.edu.lb", office: "RGB 411", ext: "3554",
     bio: "Fluid dynamics and quantum computing — accelerating multiscale simulations of fluid flow, including quantum algorithms and lattice methods.",
     interests: ["Fluid dynamics", "Kinetic theory", "Lattice methods", "Nonlinear dynamics", "Quantum algorithms", "Photonics"]
   },
   {
     group: "Professor", name: "Dr. Theresa Honein", title: "Assistant Professor",
-    photo: "images/honein.jpg", initials: "TH",
+    photo: "images/honein.png", initials: "TH",
     email: "th72@aub.edu.lb", office: "Bechtel 532", ext: "3429",
     bio: "Dynamics and mechanics — physically accurate simulation of constrained and impacting rigid-body systems.",
     interests: ["Dynamics", "Mechanics", "Constraints & holonomy", "Motion planning", "Nonsmooth dynamics"]
   },
   {
     group: "Professor", name: "Dr. Issam Lakkis", title: "Professor & Chairperson",
-    photo: "images/lakkis.jpg", initials: "IL",
+    photo: "images/lakkis.png", initials: "IL",
     email: "il01@aub.edu.lb", office: "Bechtel 309a", ext: "3636",
     bio: "MEMS and microfluidics — grid-free numerical modeling of transport phenomena, bio-flows, and multiscale micro-devices.",
     interests: ["Microfluidics", "MEMS / NEMS", "Grid-free methods", "Transport phenomena", "Molecular dynamics"]
