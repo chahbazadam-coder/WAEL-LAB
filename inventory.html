@@ -203,17 +203,38 @@
      the listed tags get suggested (★).
      ===================================================================== */
   const TAG_RULES = [
-    { keywords: ["acid", "hydroxide", "chloride", "sulfate", "ethanol", "reagent", "solution"], tags: ["Chemical"] },
-    { keywords: ["acid", "toxic", "flammable", "corrosive", "hazard"],                          tags: ["Hazard"] },
-    { keywords: ["freezer", "-20", "-80", "cold", "fridge", "enzyme", "antibody"],              tags: ["Cold storage"] },
-    { keywords: ["pipette", "tip", "tube", "plate", "flask", "beaker", "glassware"],            tags: ["Consumable"] },
-    { keywords: ["microscope", "centrifuge", "scale", "balance", "pcr", "spectro"],             tags: ["Equipment"] },
-    { keywords: ["kit", "assay", "buffer", "media", "agar"],                                    tags: ["Reagent kit"] },
-    { keywords: ["glove", "mask", "goggle", "coat", "safety"],                                  tags: ["Safety gear"] },
+    // --- Optics ---
+    { keywords: ["lens", "mirror", "beam", "fiber", "fibre", "optic", "filter", "polarizer", "polariser",
+                 "waveplate", "objective", "grating", "prism", "collimator", "photodiode", "detector",
+                 "led", "aperture", "iris", "pinhole", "beamsplitter", "diffuser", "optical"],           tags: ["Optics"] },
+    // --- Laser (also a hazard) ---
+    { keywords: ["laser", "diode laser", "nd:yag", "he-ne", "helium-neon", "532", "635", "780", "1064"], tags: ["Laser", "Hazard"] },
+    // --- Microfluidics ---
+    { keywords: ["microfluidic", "chip", "pdms", "channel", "syringe", "syringe pump", "tubing", "valve",
+                 "wafer", "mold", "mould", "master", "su-8", "su8", "silicone", "plasma", "membrane",
+                 "reservoir", "droplet", "flow cell"],                                                    tags: ["Microfluidics"] },
+    // --- Electronics ---
+    { keywords: ["resistor", "capacitor", "inductor", "transistor", "diode", "ic", "chip", "pcb",
+                 "arduino", "raspberry", "esp32", "microcontroller", "breadboard", "wire", "cable",
+                 "connector", "header", "sensor", "relay", "motor", "driver", "power supply", "psu",
+                 "oscilloscope", "multimeter", "soldering", "battery", "amplifier"],                      tags: ["Electronics"] },
+    // --- Chemicals / solvents (fabrication + cleaning) ---
+    { keywords: ["acetone", "isopropanol", "ipa", "ethanol", "methanol", "solvent", "resist", "developer",
+                 "acid", "photoresist", "silane", "glue", "epoxy", "adhesive"],                           tags: ["Chemical", "Flammable"] },
+    // --- Equipment (big/shared instruments) ---
+    { keywords: ["microscope", "camera", "stage", "spectrometer", "generator", "function generator",
+                 "pump", "controller", "objective", "spin coater", "hotplate", "oven", "printer",
+                 "power meter", "translation"],                                                           tags: ["Equipment"] },
+    // --- Consumables (things you use up) ---
+    { keywords: ["slide", "coverslip", "cover slip", "tip", "glove", "wipe", "petri", "vial", "pipette",
+                 "tape", "foil", "tubing"],                                                               tags: ["Consumable"] },
+    // --- Safety gear ---
+    { keywords: ["goggle", "glasses", "laser goggle", "glove", "coat", "shield", "mask", "safety"],       tags: ["Safety gear"] },
   ];
 
   // Base tags always shown in the palette (plus any you create).
-  const BASE_TAGS = ["Chemical", "Hazard", "Cold storage", "Consumable", "Equipment", "Reagent kit", "Safety gear", "Low stock"];
+  const BASE_TAGS = ["Optics", "Laser", "Microfluidics", "Electronics", "Chemical", "Equipment",
+                     "Consumable", "Safety gear", "Hazard", "Flammable", "Low stock"];
 
   /* ===================================================================== */
 
