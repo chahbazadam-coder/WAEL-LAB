@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Members — EFD Lab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .group-head { margin: 40px 0 20px; }
+    .group-head h2 { font-size: 1.5rem; letter-spacing: -0.01em; }
+    .group-head .count { color: var(--muted); font-weight: 600; font-size: 0.9rem; margin-left: 8px; }
+    .mgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .mcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .mcard .top { display: flex; gap: 16px; align-items: center; }
+    .mphoto { width: 84px; height: 84px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+      box-shadow: 0 0 0 1px var(--border); background: var(--accent-soft); }
+    .mcard h3 { font-size: 1.1rem; }
+    .mcard .title { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+    .mcard .bio { color: var(--muted); font-size: 0.9rem; margin-top: 14px; }
+    .mcard .interests { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .mcard .interests .tag { font-size: 0.72rem; }
+    .mcard .contact { font-size: 0.85rem; color: var(--muted); margin-top: 14px; line-height: 1.6;
+      border-top: 1px solid var(--border); padding-top: 12px; }
+    .mcard .contact a { font-weight: 600; }
+    .group-empty { color: var(--muted); background: var(--surface); border: 1px dashed var(--border);
+      border-radius: var(--radius); padding: 20px; font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand"><a href="index.html" style="color:inherit;text-decoration:none;">EFD <span>Lab</span></a></div>
+        <div class="nav-links" id="nav-links">
+          <a href="index.html">Home</a>
+          <a href="members.html" class="active">Members</a>
+          <a href="machines.html">Machines &amp; Tools</a>
+          <a href="inventory.html">Inventory</a>
+          <a href="safety.html">Safety</a>
+        </div>
+        <button class="menu-btn" id="menu-btn" aria-label="Toggle menu">☰</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <h1 class="page-title">Members</h1>
+    <p class="page-sub">The people of the Experimental Fluid Dynamics Laboratory — Department of Mechanical Engineering, American University of Beirut.</p>
+    <div id="groups"></div>
+  </div>
+
+  <footer>
+    <div class="wrap"><div>© <span id="year"></span> Experimental Fluid Dynamics Laboratory · American University of Beirut.</div><div>Members</div></div>
+  </footer>
+
+  <script src="data/members.js"></script>
+  <script>
+    var $ = function (id) { return document.getElementById(id); };
+    $("menu-btn").addEventListener("click", function () { $("nav-links").classList.toggle("open"); });
+    $("year").textContent = new Date().getFullYear();
+
+    function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c];});}
+
+    var GROUPS = [
+      { key: "Professor",     label: "Professors",              empty: "[placeholder — professors]" },
+      { key: "Graduate",      label: "Graduate students",       empty: "[placeholder — add graduate students in data/members.js]" },
+      { key: "Undergraduate", label: "Undergraduate students",  empty: "[placeholder — add undergraduate students in data/members.js]" }
+    ];
+
+    function card(m) {
+      var interests = (m.interests || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("");
+      var contactBits = [];
+      if (m.email)  contactBits.push('<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>');
+      if (m.office) contactBits.push('Office: ' + esc(m.office));
+      if (m.ext)    contactBits.push('ext ' + esc(m.ext));
+      return '<div class="mcard">' +
+        '<div class="top">' + window.memberImg(m, "mphoto") +
+          '<div><h3>' + esc(m.name) + '</h3><div class="title">' + esc(m.title || "") + '</div></div>' +
+        '</div>' +
+        (m.bio ? '<p class="bio">' + esc(m.bio) + '</p>' : '') +
+        (interests ? '<div class="interests">' + interests + '</div>' : '') +
+        (contactBits.length ? '<div class="contact">' + contactBits.join('<br>') + '</div>' : '') +
+      '</div>';
+    }
+
+    function render() {
+      var box = $("groups"); box.innerHTML = "";
+      GROUPS.forEach(function (g) {
+        var people = window.membersByGroup(g.key);
+        var html = '<div class="group-head"><h2>' + g.label +
+          '<span class="count">' + people.length + '</span></h2></div>';
+        if (people.length) html += '<div class="mgrid">' + people.map(card).join("") + '</div>';
+        else html += '<div class="group-empty">' + g.empty + '</div>';
+        box.insertAdjacentHTML("beforeend", html);
+      });
+    }
+    render();
+  </script>
+
+</body>
+</html>

@@ -135,7 +135,7 @@
         <div class="nav-links" id="nav-links">
           <a href="#areas">Research</a>
           <a href="#resources">Resources</a>
-          <a href="#people">Members</a>
+          <a href="members.html">Members</a>
           <a href="#publications">Publications</a>
           <a href="machines.html">Machines</a>
           <a href="inventory.html">Inventory</a>
@@ -233,7 +233,7 @@
           <p>Rules, machine SOPs, and emergency info.</p>
           <span class="go">Read →</span>
         </a>
-        <a class="tile" href="#people">
+        <a class="tile" href="members.html">
           <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
           <h3>Members</h3>
           <p>The people behind the research.</p>
@@ -249,39 +249,11 @@
       <div class="sec-head">
         <div class="kicker">Who we are</div>
         <h2>Members</h2>
-        <p>The lab is led by three faculty in the Department of Mechanical Engineering.</p>
+        <p>Faculty of the lab, Department of Mechanical Engineering. <a href="members.html">See all members →</a></p>
       </div>
-      <div class="people-grid">
-        <div class="person">
-          <img class="person-photo" src="images/itani.jpg" alt="Dr. Wael Itani"
-               onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,'+encodeURIComponent('&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'&gt;&lt;rect width=\'100\' height=\'100\' fill=\'#eef2fe\'/&gt;&lt;text x=\'50%\' y=\'55%\' fill=\'#2b5ce6\' font-family=\'sans-serif\' font-size=\'26\' font-weight=\'700\' text-anchor=\'middle\' dominant-baseline=\'middle\'&gt;WI&lt;/text&gt;&lt;/svg&gt;')">
-          <h3>Dr. Wael Itani</h3>
-          <div class="role">Assistant Professor</div>
-          <div class="affil">Mechanical Engineering</div>
-          <p class="bio">Fluid dynamics &amp; quantum computing — accelerating multiscale simulations of fluid flow, including quantum algorithms and lattice methods.</p>
-          <div class="interests">Fluid dynamics · Kinetic theory · Lattice methods · Quantum algorithms · Photonics</div>
-          <div class="contact"><a href="mailto:wi07@aub.edu.lb">wi07@aub.edu.lb</a><br>RGB 411 · ext 3554</div>
-        </div>
-        <div class="person">
-          <img class="person-photo" src="images/honein.jpg" alt="Dr. Theresa Honein"
-               onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,'+encodeURIComponent('&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'&gt;&lt;rect width=\'100\' height=\'100\' fill=\'#eef2fe\'/&gt;&lt;text x=\'50%\' y=\'55%\' fill=\'#2b5ce6\' font-family=\'sans-serif\' font-size=\'26\' font-weight=\'700\' text-anchor=\'middle\' dominant-baseline=\'middle\'&gt;TH&lt;/text&gt;&lt;/svg&gt;')">
-          <h3>Dr. Theresa Honein</h3>
-          <div class="role">Assistant Professor</div>
-          <div class="affil">Mechanical Engineering</div>
-          <p class="bio">Dynamics &amp; mechanics — physically accurate simulation of constrained and impacting rigid-body systems.</p>
-          <div class="interests">Dynamics · Mechanics · Constraints &amp; holonomy · Motion planning · Nonsmooth dynamics</div>
-          <div class="contact"><a href="mailto:th72@aub.edu.lb">th72@aub.edu.lb</a><br>Bechtel 532 · ext 3429</div>
-        </div>
-        <div class="person">
-          <img class="person-photo" src="images/lakkis.jpg" alt="Dr. Issam Lakkis"
-               onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,'+encodeURIComponent('&lt;svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'&gt;&lt;rect width=\'100\' height=\'100\' fill=\'#eef2fe\'/&gt;&lt;text x=\'50%\' y=\'55%\' fill=\'#2b5ce6\' font-family=\'sans-serif\' font-size=\'26\' font-weight=\'700\' text-anchor=\'middle\' dominant-baseline=\'middle\'&gt;IL&lt;/text&gt;&lt;/svg&gt;')">
-          <h3>Dr. Issam Lakkis</h3>
-          <div class="role">Professor &amp; Chairperson</div>
-          <div class="affil">Mechanical Engineering</div>
-          <p class="bio">MEMS &amp; microfluidics — grid-free numerical modeling of transport phenomena, bio-flows, and multiscale micro-devices.</p>
-          <div class="interests">Microfluidics · MEMS/NEMS · Grid-free methods · Transport phenomena · Molecular dynamics</div>
-          <div class="contact"><a href="mailto:il01@aub.edu.lb">il01@aub.edu.lb</a><br>Bechtel 309a · ext 3636</div>
-        </div>
+      <div class="people-grid" id="people-grid"></div>
+      <div style="text-align:center;margin-top:28px;">
+        <a class="btn btn-ghost" href="members.html">View full members page →</a>
       </div>
     </div>
   </section>
@@ -328,6 +300,7 @@
     </div>
   </footer>
 
+  <script src="data/members.js"></script>
   <script>
     // Mobile menu
     document.getElementById("menu-btn").addEventListener("click", function () {
@@ -338,13 +311,28 @@
     });
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    // Compact members preview (professors) from data/members.js
+    (function () {
+      function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c];});}
+      var grid = document.getElementById("people-grid");
+      if (!grid || !window.membersByGroup) return;
+      grid.innerHTML = window.membersByGroup("Professor").map(function (m) {
+        var contact = [];
+        if (m.email)  contact.push('<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>');
+        if (m.office) contact.push('Office: ' + esc(m.office));
+        return '<div class="person">' + window.memberImg(m, "person-photo") +
+          '<h3>' + esc(m.name) + '</h3>' +
+          '<div class="role">' + esc(m.title || "") + '</div>' +
+          (contact.length ? '<div class="contact">' + contact.join('<br>') + '</div>' : '') +
+          '</div>';
+      }).join("");
+    })();
+
     // Reveal on scroll
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
-
-    // Count-up stats
   </script>
 
 </body>
