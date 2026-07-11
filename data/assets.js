@@ -40,7 +40,7 @@
    type "cabinet" (a cabinet, locker, OR a box):
      description
      contains: [ id, id, ... ]                 // other catalogued items (each has its own QR page)
-     contents: [ { name, qty, note }, ... ]    // an inline packing list (no separate pages)
+     contents: [ { name, qty, note, photo }, ... ]  // inline packing list; photo optional
 
    type "tool":
      purpose, home (cabinet id it belongs to), qty
@@ -69,18 +69,19 @@ window.LAB_ASSETS = [
   {
     id: "cab-mech314", no: "EFD-C-001", type: "cabinet", name: "MECH 314 Class Activity Box", icon: "box",
     location: "[location]",
+    photo: "images/m314-box.jpg",
     description: "Materials and equipment for the MECH 314 class activity.",
     contents: [
-      { name: "Reusable plastic ice cubes, assorted colors", qty: "1", note: "Family / Dollar Empire — box + mesh bag" },
-      { name: "Plastic balls, assorted colors (ball-pit type)", qty: "1", note: "mesh bag" },
-      { name: "String / twine, cream", qty: "1", note: "spool" },
-      { name: "Black screen mesh / netting", qty: "1" },
-      { name: "Black fabric / cloth", qty: "1" },
-      { name: "Wooden cubes", qty: "1", note: "label 730441" },
-      { name: "Wooden balls, 3/8\" (Woodpeckers) + bulk wooden balls", qty: "1", note: "label 5048" },
-      { name: "Clear / frosted spheres (beads)", qty: "1", note: "label 730442 PO" },
-      { name: "AQUANEAT 50 GPH water pump (G054)", qty: "19" },
-      { name: "Altera Cyclone V GT FPGA Development Kit", qty: "2" }
+      { name: "Reusable plastic ice cubes, assorted colors", qty: "1", note: "Family / Dollar Empire — box + mesh bag", photo: "images/m314-icecubes.jpg" },
+      { name: "Plastic balls, assorted colors (ball-pit type)", qty: "1", note: "mesh bag", photo: "images/m314-balls.jpg" },
+      { name: "String / twine, cream", qty: "1", note: "spool", photo: "images/m314-string.jpg" },
+      { name: "Black screen mesh / netting", qty: "1", photo: "images/m314-mesh.jpg" },
+      { name: "Black fabric / cloth", qty: "1", photo: "images/m314-cloth.jpg" },
+      { name: "Wooden cubes", qty: "1", note: "label 730441", photo: "images/m314-woodcubes.jpg" },
+      { name: "Wooden balls, 3/8\" (Woodpeckers) + bulk wooden balls", qty: "1", note: "label 5048", photo: "images/m314-woodballs.jpg" },
+      { name: "Clear / frosted spheres (beads)", qty: "1", note: "label 730442 PO", photo: "images/m314-spheres.jpg" },
+      { name: "AQUANEAT 50 GPH water pump (G054)", qty: "19", photo: "images/m314-pump.jpg" },
+      { name: "Altera Cyclone V GT FPGA Development Kit", qty: "2", photo: "images/m314-fpga.jpg" }
     ]
   },
 

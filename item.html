@@ -26,10 +26,12 @@
     .mini .mic svg { width: 20px; height: 20px; }
     .mini b { font-size: 0.9rem; }
     .clist { display: flex; flex-direction: column; }
-    .crow { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+    .crow { display: flex; align-items: center; gap: 14px;
       padding: 12px 0; border-bottom: 1px solid var(--border); }
     .crow:last-child { border-bottom: none; }
-    .cname { font-size: 0.96rem; font-weight: 600; }
+    .cthumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; flex-shrink: 0;
+      background: var(--surface); border: 1px solid var(--border); }
+    .cname { flex: 1; font-size: 0.96rem; font-weight: 600; }
     .cnote { display: block; font-weight: 400; color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
     .cqty { flex-shrink: 0; font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); }
     .backlink { display: inline-block; margin: 24px 0 0; font-size: 0.9rem; }
@@ -158,6 +160,7 @@
 
     function cabinetView(a) {
       var h = "";
+      if (a.photo) h += '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(a.photo) + '" onerror="this.style.display=\'none\'">';
       if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.description) + '</p>';
       var items = (a.contains || []).map(window.getAsset).filter(Boolean);
       var contents = a.contents || [];
@@ -174,6 +177,7 @@
       if (contents.length) {
         h += '<div class="panel"><h2>📦 Contents</h2><div class="clist">' + contents.map(function (c) {
           return '<div class="crow">' +
+            (c.photo ? '<a href="' + esc(c.photo) + '" target="_blank" rel="noopener"><img class="cthumb" alt="" src="' + esc(c.photo) + '" onerror="this.style.display=\'none\'"></a>' : '') +
             '<div class="cname">' + esc(c.name) + (c.note ? '<span class="cnote">' + esc(c.note) + '</span>' : '') + '</div>' +
             '<div class="cqty">' + (c.qty ? '×' + esc(c.qty) : '—') + '</div></div>';
         }).join("") + '</div></div>';
