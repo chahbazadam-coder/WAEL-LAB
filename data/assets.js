@@ -80,8 +80,7 @@ window.LAB_ASSETS = [
       { name: "Wooden cubes", qty: "1", note: "label 730441", photo: "images/m314-woodcubes.jpg" },
       { name: "Wooden balls, 3/8\" (Woodpeckers) + bulk wooden balls", qty: "1", note: "label 5048", photo: "images/m314-woodballs.jpg" },
       { name: "Clear / frosted spheres (beads)", qty: "1", note: "label 730442 PO", photo: "images/m314-spheres.jpg" },
-      { name: "AQUANEAT 50 GPH water pump (G054)", qty: "19", photo: "images/m314-pump.jpg" },
-      { name: "Altera Cyclone V GT FPGA Development Kit", qty: "2", photo: "images/m314-fpga.jpg" }
+      { name: "AQUANEAT 50 GPH water pump (G054)", qty: "19", photo: "images/m314-pump.jpg" }
     ]
   },
 
