@@ -127,9 +127,17 @@
 
   <div class="wrap">
     <h1 class="page-title">Lab Inventory</h1>
-    <p class="page-sub">Scan or add an item, tag it, and it's logged automatically. Suggested tags are marked with a ★.</p>
+    <p class="page-sub">Boxes and supplies in the lab. Tap a box to see everything inside; use the quick-log tool below to scan and tag loose items.</p>
+
+    <!-- ============ CATALOG BOXES / STORAGE ============ -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+      <div><h2 style="font-size:1.2rem;">📦 Boxes &amp; storage</h2></div>
+      <a class="btn btn-ghost btn-sm" href="qr.html">🖨 Print QR codes</a>
+    </div>
+    <div class="cab-grid" id="cab-grid" style="margin-bottom:36px;"></div>
 
     <!-- ============ ADD / SCAN PANEL ============ -->
+    <h2 style="font-size:1.2rem;margin-bottom:10px;">🏷️ Quick-log loose items</h2>
     <div class="panel">
       <h2>➕ Add an item</h2>
 
@@ -199,6 +207,29 @@
       <div id="item-list"></div>
     </div>
   </div>
+
+  <!-- Catalog boxes (from the shared asset catalog) -->
+  <script src="data/assets.js"></script>
+  <script>
+  (function () {
+    function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c];});}
+    var box = document.getElementById("cab-grid");
+    if (!box || !window.LAB_ASSETS) return;
+    var cabs = window.LAB_ASSETS.filter(function (a) { return a.type === "cabinet"; });
+    if (!cabs.length) { box.innerHTML = '<div class="empty">No boxes listed yet.</div>'; return; }
+    box.innerHTML = cabs.map(function (cb) {
+      var n = (cb.contains || []).length + (cb.contents || []).length;
+      var icon = cb.photo
+        ? '<img src="' + esc(cb.photo) + '" alt="" onerror="this.style.display=\'none\'">'
+        : window.assetIcon(cb.icon);
+      return '<a class="cab" href="item.html?id=' + encodeURIComponent(cb.id) + '">' +
+        '<span class="cic">' + icon + '</span>' +
+        '<span class="cinfo"><b>' + esc(cb.name) + '</b>' +
+        '<span>' + esc(cb.location || '') + '</span>' +
+        '<span>' + n + ' item' + (n === 1 ? '' : 's') + ' inside</span></span></a>';
+    }).join("");
+  })();
+  </script>
 
   <script>
   /* =====================================================================

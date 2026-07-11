@@ -57,11 +57,6 @@
     </div>
     <div class="grid machine-grid" id="machine-grid"></div>
 
-    <!-- ============ CABINETS ============ -->
-    <h1 class="page-title" style="margin-top:44px;">Cabinets &amp; lockers</h1>
-    <p class="page-sub">Tap a cabinet to see what's inside.</p>
-    <div class="cab-grid" id="cab-grid"></div>
-
     <!-- ============ TOOLS ============ -->
     <h1 class="page-title" style="margin-top:44px;">Tools</h1>
     <p class="page-sub">Shared hand tools — what they're for and where they live.</p>
@@ -188,7 +183,7 @@
 
   $("menu-btn").addEventListener("click", function(){ $("nav-links").classList.toggle("open"); });
   $("year").textContent = new Date().getFullYear();
-  renderMaintenance(); render(); renderCabinets(); renderTools();
+  renderMaintenance(); render(); renderTools();
   </script>
 
 </body>

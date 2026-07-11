@@ -111,7 +111,9 @@
       else if (a.type === "cabinet") html += cabinetView(a);
       else if (a.type === "tool") html += toolView(a);
 
-      html += '<a class="backlink" href="machines.html">← All machines &amp; tools</a>';
+      html += a.type === "cabinet"
+        ? '<a class="backlink" href="inventory.html">← All inventory</a>'
+        : '<a class="backlink" href="machines.html">← All machines &amp; tools</a>';
       c.innerHTML = html;
     }
 
