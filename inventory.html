@@ -392,19 +392,28 @@
     used.forEach(t => box.appendChild(mk(t, t)));
   }
 
-  // Read-only rows pulled from the shared catalog (every box's contents).
+  // Read-only rows pulled from the shared catalog (box contents + standalone tools).
   function catalogRows() {
     if (!window.LAB_ASSETS) return [];
     const rows = [];
-    window.LAB_ASSETS.filter(a => a.type === "cabinet").forEach(cb => {
-      (cb.contents || []).forEach(c => rows.push({
-        name: c.name, qty: c.qty || "", loc: "in " + cb.name, notes: c.note || "",
-        photo: c.photo || "", tags: [], boxId: cb.id, readonly: true
-      }));
-      (cb.contains || []).map(window.getAsset).filter(Boolean).forEach(t => rows.push({
-        name: t.name, qty: t.qty || "", loc: "in " + cb.name, notes: "",
-        photo: t.photo || "", tags: t.tags || [], boxId: cb.id, readonly: true
-      }));
+    window.LAB_ASSETS.forEach(a => {
+      if (a.type === "cabinet") {
+        const href = "item.html?id=" + encodeURIComponent(a.id);
+        (a.contents || []).forEach(c => rows.push({
+          name: c.name, qty: c.qty || "", loc: "in " + a.name, notes: c.note || "",
+          photo: c.photo || "", tags: [], href: href, linkLabel: "Open box →", readonly: true
+        }));
+        (a.contains || []).map(window.getAsset).filter(Boolean).forEach(t => rows.push({
+          name: t.name, qty: t.qty || "", loc: "in " + a.name, notes: "",
+          photo: t.photo || "", tags: t.tags || [], href: href, linkLabel: "Open box →", readonly: true
+        }));
+      } else if (a.type === "tool") {
+        rows.push({
+          name: a.name, qty: a.qty || "", loc: a.location || "", notes: "",
+          photo: a.photo || "", tags: a.tags || [],
+          href: "item.html?id=" + encodeURIComponent(a.id), linkLabel: "Open →", readonly: true
+        });
+      }
     });
     return rows;
   }
@@ -444,7 +453,7 @@
         '</div>' +
         '<div class="item-actions">' +
           (it.readonly
-            ? '<a class="btn btn-ghost btn-sm" href="item.html?id=' + encodeURIComponent(it.boxId) + '">Open box →</a>'
+            ? '<a class="btn btn-ghost btn-sm" href="' + it.href + '">' + (it.linkLabel || 'Open →') + '</a>'
             : '<button class="btn btn-ghost btn-sm btn-danger" data-del="' + it.id + '">Delete</button>') +
         '</div>';
       el.querySelector("h3").textContent = it.name;

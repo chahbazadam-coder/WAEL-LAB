@@ -85,9 +85,12 @@ window.LAB_ASSETS = [
   },
 
   /* ------------------------- TOOLS ------------------------- */
-  { id: "example-tool", no: "EFD-T-001", type: "tool", name: "[Tool name]", icon: "tool",
-    tags: ["[domain]", "[tag]"],
-    purpose: "[placeholder]", home: "", qty: "[#]", location: "[location]" }
+  { id: "tool-clamp-large", no: "EFD-T-001", type: "tool", name: "Bar clamp, large (MESA)", icon: "tool",
+    tags: ["General", "Clamping"],
+    purpose: "", home: "", qty: "5", location: "[location]", photo: "images/tool-clamp-large.jpg" },
+  { id: "tool-clamp-small", no: "EFD-T-002", type: "tool", name: "Bar clamp, small", icon: "tool",
+    tags: ["General", "Clamping"],
+    purpose: "", home: "", qty: "7", location: "[location]", photo: "" }
 
 ];
 

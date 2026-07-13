@@ -191,6 +191,7 @@
 
     function toolView(a) {
       var h = "";
+      if (a.photo) h += '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(a.photo) + '" onerror="this.style.display=\'none\'">';
       if (a.purpose) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.purpose) + '</p>';
       h += maintPanel(a);
       h += '<div class="panel"><dl class="kv">';
