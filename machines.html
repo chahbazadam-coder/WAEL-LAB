@@ -159,9 +159,15 @@
     if (!ts.length) { box.innerHTML = '<div class="empty">No tools listed.</div>'; return; }
     ts.forEach(function(t){
       var row = document.createElement("div"); row.className = "tool-row";
-      var thumb = t.photo
-        ? '<img class="tool-thumb" alt="" src="' + esc(t.photo) + '" onerror="window.thumbFail(this)">'
-        : '<span class="tool-thumb ph">' + window.assetIcon("tool") + '</span>';
+      var photos = window.itemPhotos(t);
+      var thumb;
+      if (photos.length) {
+        var gal = photos.length > 1 ? ' data-gallery="' + photos.map(esc).join("|") + '"' : '';
+        var badge = photos.length > 1 ? '<span class="ph-badge">' + photos.length + '</span>' : '';
+        thumb = '<span class="thumb-wrap"><img class="tool-thumb" alt="" src="' + esc(photos[0]) + '"' + gal + ' onerror="window.thumbFail(this)">' + badge + '</span>';
+      } else {
+        thumb = '<span class="tool-thumb ph">' + window.assetIcon("tool") + '</span>';
+      }
       row.innerHTML =
         '<a class="tool-id" href="item.html?id=' + encodeURIComponent(t.id) + '">' +
           thumb + '<span class="tool-name">' + esc(t.name) + '</span></a>' +

@@ -87,7 +87,8 @@ window.LAB_ASSETS = [
   /* ------------------------- TOOLS ------------------------- */
   { id: "tool-clamp-large", no: "EFD-T-001", type: "tool", name: "Bar clamp, large (MESA)", icon: "tool",
     tags: ["General", "Clamping"],
-    purpose: "", home: "", qty: "5", location: "[location]", photo: "images/tool-clamp-large.jpg" },
+    purpose: "", home: "", qty: "5", location: "[location]",
+    photos: ["images/tool-clamp-large.jpg", "images/tool-clamp-large-2.jpg"] },
   { id: "tool-clamp-small", no: "EFD-T-002", type: "tool", name: "Bar clamp, small", icon: "tool",
     tags: ["General", "Clamping"],
     purpose: "", home: "", qty: "7", location: "[location]", photo: "" },
@@ -130,7 +131,10 @@ window.LAB_ASSETS = [
   { id: "tool-sd-phillips-br", no: "EFD-T-021", type: "tool", name: "Phillips screwdriver (black/red handle)", icon: "tool",
     tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-phillips-br.jpg" },
   { id: "tool-sd-phillips-rb-small", no: "EFD-T-022", type: "tool", name: "Phillips screwdriver (red/black handle, small)", icon: "tool",
-    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-phillips-rb-small.jpg" }
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-phillips-rb-small.jpg" },
+  { id: "tool-caliper", no: "EFD-T-023", type: "tool", name: "Electronic digital caliper (150 mm)", icon: "tool",
+    tags: ["General", "Measurement"], purpose: "", home: "", qty: "1", location: "[location]",
+    photos: ["images/tool-caliper.jpg", "images/tool-caliper-2.jpg"] }
 
 ];
 
@@ -160,4 +164,10 @@ window.assetIcon = function (key) {
 
 window.getAsset = function (id) {
   return (window.LAB_ASSETS || []).filter(function (a) { return a.id === id; })[0] || null;
+};
+
+// All photos for an item: the `photos` array if present, else the single `photo`.
+window.itemPhotos = function (a) {
+  if (a && a.photos && a.photos.length) return a.photos;
+  return (a && a.photo) ? [a.photo] : [];
 };

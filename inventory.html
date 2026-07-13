@@ -401,16 +401,16 @@
         const href = "item.html?id=" + encodeURIComponent(a.id);
         (a.contents || []).forEach(c => rows.push({
           name: c.name, qty: c.qty || "", loc: "in " + a.name, notes: c.note || "",
-          photo: c.photo || "", tags: [], href: href, linkLabel: "Open box →", readonly: true
+          photos: c.photo ? [c.photo] : [], tags: [], href: href, linkLabel: "Open box →", readonly: true
         }));
         (a.contains || []).map(window.getAsset).filter(Boolean).forEach(t => rows.push({
           name: t.name, qty: t.qty || "", loc: "in " + a.name, notes: "",
-          photo: t.photo || "", tags: t.tags || [], href: href, linkLabel: "Open box →", readonly: true
+          photos: window.itemPhotos(t), tags: t.tags || [], href: href, linkLabel: "Open box →", readonly: true
         }));
       } else if (a.type === "tool") {
         rows.push({
           name: a.name, qty: a.qty || "", loc: a.location || "", notes: "",
-          photo: a.photo || "", tags: a.tags || [],
+          photos: window.itemPhotos(a), tags: a.tags || [],
           href: "item.html?id=" + encodeURIComponent(a.id), linkLabel: "Open →", readonly: true
         });
       }
@@ -441,7 +441,13 @@
       el.className = "item";
       const meta = [it.code && ("#" + it.code), it.qty && ("×" + it.qty), it.loc, it.added && ("added " + it.added)]
         .filter(Boolean).join(" · ");
-      const thumb = it.photo ? '<img class="item-thumb" alt="" src="' + it.photo + '" onerror="this.style.display=\'none\'">' : '';
+      const photos = (it.photos && it.photos.length) ? it.photos : (it.photo ? [it.photo] : []);
+      var thumb = '';
+      if (photos.length) {
+        const gal = photos.length > 1 ? ' data-gallery="' + photos.join('|') + '"' : '';
+        const badge = photos.length > 1 ? '<span class="ph-badge">' + photos.length + '</span>' : '';
+        thumb = '<span class="thumb-wrap"><img class="item-thumb" alt="" src="' + photos[0] + '"' + gal + ' onerror="this.style.display=\'none\'">' + badge + '</span>';
+      }
       el.innerHTML =
         '<div class="item-left">' + thumb +
           '<div class="item-main">' +

@@ -71,6 +71,14 @@
     function esc(s) { return (s == null ? "" : String(s)).replace(/[&<>"]/g, function (c) {
       return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
 
+    function photoBlock(a) {
+      var photos = window.itemPhotos(a);
+      if (!photos.length) return "";
+      var gal = photos.length > 1 ? ' data-gallery="' + photos.map(esc).join("|") + '"' : '';
+      return '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(photos[0]) + '"' + gal + ' onerror="this.style.display=\'none\'">' +
+        (photos.length > 1 ? '<div class="photo-hint">📷 ' + photos.length + ' photos — click to browse</div>' : '');
+    }
+
     var STATUS = { available: "Available", inuse: "In use", down: "Down", caution: "Caution" };
 
     function getId() {
@@ -162,7 +170,7 @@
 
     function cabinetView(a) {
       var h = "";
-      if (a.photo) h += '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(a.photo) + '" onerror="this.style.display=\'none\'">';
+      h += photoBlock(a);
       if (a.description) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.description) + '</p>';
       var items = (a.contains || []).map(window.getAsset).filter(Boolean);
       var contents = a.contents || [];
@@ -191,7 +199,7 @@
 
     function toolView(a) {
       var h = "";
-      if (a.photo) h += '<img class="item-photo" alt="' + esc(a.name) + '" src="' + esc(a.photo) + '" onerror="this.style.display=\'none\'">';
+      h += photoBlock(a);
       if (a.purpose) h += '<p style="font-size:1.05rem;color:var(--muted);margin:6px 0 16px;">' + esc(a.purpose) + '</p>';
       h += maintPanel(a);
       h += '<div class="panel"><dl class="kv">';
