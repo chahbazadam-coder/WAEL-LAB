@@ -92,6 +92,9 @@
       background: #fff; border: 1px solid var(--border); border-radius: 10px;
       padding: 16px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; gap: 16px;
     }
+    .item-left { display: flex; gap: 14px; align-items: flex-start; flex: 1; min-width: 0; }
+    .item-thumb { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; background: var(--surface); }
+    .item-main { min-width: 0; }
     .item-main h3 { font-size: 1.02rem; }
     .item-meta { font-size: 0.85rem; color: var(--muted); margin-top: 3px; }
     .item-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
@@ -127,19 +130,11 @@
 
   <div class="wrap">
     <h1 class="page-title">Lab Inventory</h1>
-    <p class="page-sub">Boxes and supplies in the lab. Tap a box to see everything inside; use the quick-log tool below to scan and tag loose items.</p>
+    <p class="page-sub">Everything in the lab. Log a new item at the top; browse the boxes and the full item list below.</p>
 
-    <!-- ============ CATALOG BOXES / STORAGE ============ -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-      <div><h2 style="font-size:1.2rem;">📦 Boxes &amp; storage</h2></div>
-      <a class="btn btn-ghost btn-sm" href="qr.html">🖨 Print QR codes</a>
-    </div>
-    <div class="cab-grid" id="cab-grid" style="margin-bottom:36px;"></div>
-
-    <!-- ============ ADD / SCAN PANEL ============ -->
-    <h2 style="font-size:1.2rem;margin-bottom:10px;">🏷️ Quick-log loose items</h2>
+    <!-- ============ ADD / LOG (TOP) ============ -->
     <div class="panel">
-      <h2>➕ Add an item</h2>
+      <h2>➕ Add / log an item</h2>
 
       <div class="actions-bar" style="margin-bottom:14px;">
         <button class="btn btn-ghost btn-sm" id="scan-toggle">📷 Scan barcode / QR</button>
@@ -192,12 +187,19 @@
       </div>
     </div>
 
-    <!-- ============ INVENTORY LIST ============ -->
+    <!-- ============ BOXES & STORAGE ============ -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin:38px 0 14px;">
+      <div><h2 style="font-size:1.2rem;">📦 Boxes &amp; storage</h2></div>
+      <a class="btn btn-ghost btn-sm" href="qr.html">🖨 Print QR codes</a>
+    </div>
+    <div class="cab-grid" id="cab-grid" style="margin-bottom:36px;"></div>
+
+    <!-- ============ ALL ITEMS ============ -->
     <div class="panel">
-      <h2>📦 Logged items <span class="count-badge" id="count"></span></h2>
+      <h2>📋 Everything in the lab <span class="count-badge" id="count"></span></h2>
 
       <div class="list-controls">
-        <input id="search" type="text" placeholder="Search items…">
+        <input id="search" type="text" placeholder="Search everything…">
         <button class="btn btn-ghost btn-sm" id="export-btn">⬇ Export</button>
         <button class="btn btn-ghost btn-sm" id="import-btn">⬆ Import</button>
         <input type="file" id="import-file" accept="application/json" style="display:none;">
@@ -390,36 +392,60 @@
     used.forEach(t => box.appendChild(mk(t, t)));
   }
 
+  // Read-only rows pulled from the shared catalog (every box's contents).
+  function catalogRows() {
+    if (!window.LAB_ASSETS) return [];
+    const rows = [];
+    window.LAB_ASSETS.filter(a => a.type === "cabinet").forEach(cb => {
+      (cb.contents || []).forEach(c => rows.push({
+        name: c.name, qty: c.qty || "", loc: "in " + cb.name, notes: c.note || "",
+        photo: c.photo || "", tags: [], boxId: cb.id, readonly: true
+      }));
+      (cb.contains || []).map(window.getAsset).filter(Boolean).forEach(t => rows.push({
+        name: t.name, qty: t.qty || "", loc: "in " + cb.name, notes: "",
+        photo: t.photo || "", tags: t.tags || [], boxId: cb.id, readonly: true
+      }));
+    });
+    return rows;
+  }
+
   function renderList() {
     renderFilters();
     const q = $("search").value.toLowerCase();
     const list = $("item-list");
-    let shown = items.filter(it => {
-      const matchQ = !q || (it.name + " " + it.code + " " + it.loc + " " + (it.tags||[]).join(" ")).toLowerCase().includes(q);
+    const combined = catalogRows().concat(items);
+    let shown = combined.filter(it => {
+      const hay = (it.name + " " + (it.code||"") + " " + (it.loc||"") + " " + (it.notes||"") + " " + (it.tags||[]).join(" ")).toLowerCase();
+      const matchQ = !q || hay.includes(q);
       const matchF = !activeFilter || (it.tags || []).includes(activeFilter);
       return matchQ && matchF;
     });
-    $("count").textContent = "(" + items.length + ")";
+    $("count").textContent = "(" + combined.length + ")";
 
     if (!shown.length) {
-      list.innerHTML = '<div class="empty">' + (items.length ? "No items match your search/filter." : "Nothing logged yet. Scan or add your first item above.") + '</div>';
+      list.innerHTML = '<div class="empty">' + (combined.length ? "Nothing matches your search/filter." : "Nothing in the inventory yet. Add an item above.") + '</div>';
       return;
     }
     list.innerHTML = "";
     shown.forEach(it => {
       const el = document.createElement("div");
       el.className = "item";
-      const meta = [it.code && ("#" + it.code), it.qty && ("qty " + it.qty), it.loc, "added " + it.added]
+      const meta = [it.code && ("#" + it.code), it.qty && ("×" + it.qty), it.loc, it.added && ("added " + it.added)]
         .filter(Boolean).join(" · ");
+      const thumb = it.photo ? '<img class="item-thumb" alt="" src="' + it.photo + '" onerror="this.style.display=\'none\'">' : '';
       el.innerHTML =
-        '<div class="item-main">' +
-          '<h3></h3>' +
-          '<div class="item-meta"></div>' +
-          (it.notes ? '<div class="item-meta"></div>' : '') +
-          '<div class="item-tags"></div>' +
+        '<div class="item-left">' + thumb +
+          '<div class="item-main">' +
+            '<h3></h3>' +
+            '<div class="item-meta"></div>' +
+            (it.notes ? '<div class="item-meta note2"></div>' : '') +
+            '<div class="item-tags"></div>' +
+          '</div>' +
         '</div>' +
         '<div class="item-actions">' +
-          '<button class="btn btn-ghost btn-sm btn-danger" data-del="'+it.id+'">Delete</button>' +
+          (it.readonly
+            ? '<a class="btn btn-ghost btn-sm" href="item.html?id=' + encodeURIComponent(it.boxId) + '">Open box →</a>'
+            : '<button class="btn btn-ghost btn-sm btn-danger" data-del="' + it.id + '">Delete</button>') +
         '</div>';
       el.querySelector("h3").textContent = it.name;
       el.querySelectorAll(".item-meta")[0].textContent = meta;
@@ -428,7 +454,7 @@
       (it.tags || []).forEach(t => {
         const s = document.createElement("span"); s.className = "item-tag"; s.textContent = t; tagBox.appendChild(s);
       });
-      el.querySelector("[data-del]").onclick = () => {
+      if (!it.readonly) el.querySelector("[data-del]").onclick = () => {
         if (confirm("Delete \"" + it.name + "\"?")) { items = items.filter(x => x.id !== it.id); save(); renderList(); }
       };
       list.appendChild(el);
