@@ -80,6 +80,14 @@
 
   function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c];});}
 
+  // Broken/slow image -> swap to the tool icon so it never shows a broken ⊘ or blank.
+  window.thumbFail = function (img) {
+    var s = document.createElement("span");
+    s.className = "tool-thumb ph";
+    s.innerHTML = window.assetIcon("tool");
+    if (img && img.parentNode) img.replaceWith(s);
+  };
+
   function placeholder(label) {
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(
       '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"><rect width="320" height="180" fill="#eef2fe"/><text x="50%" y="50%" fill="#2b5ce6" font-family="sans-serif" font-size="15" text-anchor="middle" dominant-baseline="middle">' + label + '</text></svg>');
@@ -152,7 +160,7 @@
     ts.forEach(function(t){
       var row = document.createElement("div"); row.className = "tool-row";
       var thumb = t.photo
-        ? '<img class="tool-thumb" alt="" src="' + esc(t.photo) + '" onerror="this.style.visibility=\'hidden\'">'
+        ? '<img class="tool-thumb" alt="" src="' + esc(t.photo) + '" onerror="window.thumbFail(this)">'
         : '<span class="tool-thumb ph">' + window.assetIcon("tool") + '</span>';
       row.innerHTML =
         '<a class="tool-id" href="item.html?id=' + encodeURIComponent(t.id) + '">' +
