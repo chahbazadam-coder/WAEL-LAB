@@ -118,7 +118,19 @@ window.LAB_ASSETS = [
   { id: "tool-awl", no: "EFD-T-015", type: "tool", name: "Scratch awl / scriber", icon: "tool",
     tags: ["General", "Marking"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-awl.jpg" },
   { id: "tool-sd-flat-worn", no: "EFD-T-016", type: "tool", name: "Flathead screwdriver (worn handle)", icon: "tool",
-    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-flat-worn.jpg" }
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-flat-worn.jpg" },
+  { id: "tool-sd-flat-cream", no: "EFD-T-017", type: "tool", name: "Flathead screwdriver (cream handle)", icon: "tool",
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-flat-cream.jpg" },
+  { id: "tool-sd-flat-blackyellow", no: "EFD-T-018", type: "tool", name: "Flathead screwdriver (black/yellow handle)", icon: "tool",
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-flat-blackyellow.jpg" },
+  { id: "tool-sd-xcelite", no: "EFD-T-019", type: "tool", name: "Precision screwdriver (Xcelite XP1550, 1.5 mm)", icon: "tool",
+    tags: ["Electronics", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-xcelite.jpg" },
+  { id: "tool-sd-phillips-br-long", no: "EFD-T-020", type: "tool", name: "Phillips screwdriver (black/red handle, long)", icon: "tool",
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-phillips-br-long.jpg" },
+  { id: "tool-sd-phillips-br", no: "EFD-T-021", type: "tool", name: "Phillips screwdriver (black/red handle)", icon: "tool",
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-phillips-br.jpg" },
+  { id: "tool-sd-phillips-rb-small", no: "EFD-T-022", type: "tool", name: "Phillips screwdriver (red/black handle, small)", icon: "tool",
+    tags: ["General", "Screwdriver"], purpose: "", home: "", qty: "1", location: "[location]", photo: "images/tool-sd-phillips-rb-small.jpg" }
 
 ];
 
