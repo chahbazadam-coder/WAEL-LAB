@@ -16,10 +16,15 @@
       display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .cab .cic svg { width: 24px; height: 24px; }
     .cab .cinfo b { font-size: 0.95rem; } .cab .cinfo span { display: block; color: var(--muted); font-size: 0.82rem; }
-    .tool-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 4px; border-bottom: 1px solid var(--border); }
+    .tool-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 4px; border-bottom: 1px solid var(--border); }
     .tool-row:last-child { border-bottom: none; }
-    .tool-row a { font-weight: 600; }
-    .tool-row .tmeta { color: var(--muted); font-size: 0.88rem; text-align: right; }
+    .tool-id { display: flex; align-items: center; gap: 12px; font-weight: 600; min-width: 0; }
+    .tool-id:hover { text-decoration: none; }
+    .tool-thumb { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
+    .tool-thumb.ph { display: flex; align-items: center; justify-content: center; color: var(--accent); }
+    .tool-thumb.ph svg { width: 22px; height: 22px; }
+    .tool-name { color: var(--text); }
+    .tool-row .tmeta { color: var(--muted); font-size: 0.85rem; text-align: right; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -146,8 +151,13 @@
     if (!ts.length) { box.innerHTML = '<div class="empty">No tools listed.</div>'; return; }
     ts.forEach(function(t){
       var row = document.createElement("div"); row.className = "tool-row";
-      row.innerHTML = '<a href="item.html?id=' + encodeURIComponent(t.id) + '">' + esc(t.name) + '</a>' +
-        '<span class="tmeta">' + (t.no ? esc(t.no) + ' · ' : '') + 'qty ' + esc(t.qty||'—') + ' · ' + esc(t.location||'') + '</span>';
+      var thumb = t.photo
+        ? '<img class="tool-thumb" alt="" src="' + esc(t.photo) + '" onerror="this.style.visibility=\'hidden\'">'
+        : '<span class="tool-thumb ph">' + window.assetIcon("tool") + '</span>';
+      row.innerHTML =
+        '<a class="tool-id" href="item.html?id=' + encodeURIComponent(t.id) + '">' +
+          thumb + '<span class="tool-name">' + esc(t.name) + '</span></a>' +
+        '<span class="tmeta">' + (t.no ? esc(t.no) + ' · ' : '') + 'qty ' + esc(t.qty||'—') + (t.location ? ' · ' + esc(t.location) : '') + '</span>';
       box.appendChild(row);
     });
   }
